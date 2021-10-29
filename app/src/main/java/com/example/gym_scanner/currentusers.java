@@ -53,8 +53,7 @@ public class currentusers extends AppCompatActivity {
         });
 
         //Recycle view
-        recyclerView=findViewById(R.id.users_recycle);
-        users= new ArrayList<>();
+
         System.out.println("number"+users.size());
         users.add(new User(name,userid,R.drawable.user1));
         users.add(new User("rony","dqszqsqw1szs2s",R.drawable.user1));
