@@ -182,7 +182,7 @@
                 android:background="@color/yellow"
                 android:gravity="center"
                 android:onClick="goToUsers"
-                android:text="Check current users"
+                android:text="Users today"
                 android:textColor="@color/blue"
                 android:textStyle="bold" />
 

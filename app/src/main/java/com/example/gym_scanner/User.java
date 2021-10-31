@@ -2,14 +2,26 @@ package com.example.gym_scanner;
 
 public class User {
     String name;
-    String id;
-    Integer photo;
+    String userid;
+    String time;
+
+    public User() {
+    }
 
 
-    public User(String name, String id, Integer photo) {
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public User(String name, String userid, String time) {
         this.name = name;
-        this.id = id;
-        this.photo = photo;
+        this.userid = userid;
+        this.time=time;
+
     }
 
     public String getName() {
@@ -20,19 +32,15 @@ public class User {
         this.name = name;
     }
 
-    public String getId() {
-        return id;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
-    public Integer getPhoto() {
-        return photo;
-    }
 
-    public void setPhoto(Integer photo) {
-        this.photo = photo;
-    }
+
+
 }

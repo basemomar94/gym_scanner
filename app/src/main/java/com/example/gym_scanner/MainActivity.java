@@ -19,18 +19,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
     ImageView profile_pic;
-
+    String today_firebase;
+    String time;
 
 
     @Override
@@ -62,10 +67,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lastuser_name = findViewById(R.id.lastuser_name);
         lastuser_id = findViewById(R.id.lastuser_id);
         scan.setOnClickListener(this);
-        editText=findViewById(R.id.announcemt);
-        firebaseStorage=FirebaseStorage.getInstance();
-        storageReference=firebaseStorage.getReference();
-        profile_pic=findViewById(R.id.profile_pic);
+        editText = findViewById(R.id.announcemt);
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+        profile_pic = findViewById(R.id.profile_pic);
+        Calendar calendar = Calendar.getInstance();
+        int dayofmonth = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int year = calendar.get(Calendar.YEAR);
+        today_firebase = dayofmonth + "-" + month + "-" + year;
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+        time=hour+":"+min;
+        System.out.println(time);
+
+
+        System.out.println(today_firebase);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         editText.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +93,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        update_today();
+       // update_today();
+        gettodaycount();
 
 
     }
@@ -84,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         scan();
-        System.out.println("user" + userID);
+
     }
 
     void scan() {
@@ -112,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 userID = result.getContents();
                 users_today++;
                 savetoday();
-                today.setText("Today: " + users_today);
+
                 System.out.println(users_today + "check");
 
                 lastuser_id.setText(userID);
@@ -127,10 +145,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         username = value.getString("fname");
 
                         //Adding current users
-                        DocumentReference documentReference1 = firebaseFirestore.collection("currentusers").document("Day1");
+                        DocumentReference documentReference1 = firebaseFirestore.collection(today_firebase).document(userID);
                         Map<String, Object> currentusers = new HashMap<>();
                         currentusers.put("name", username);
                         currentusers.put("userid", userID);
+                        currentusers.put("time",time);
 
                         documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -148,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-
 
 
     public void goToUsers(View view) {
@@ -189,10 +207,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sendmessage();
     }
 
-    void sendmessage (){
-        DocumentReference documentReference =firebaseFirestore.collection("message").document("message");
-        Map<String,Object> message = new HashMap<>();
-        message.put("message",editText.getText().toString().trim());
+    void sendmessage() {
+        DocumentReference documentReference = firebaseFirestore.collection("message").document("message");
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", editText.getText().toString().trim());
         documentReference.set(message).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -202,19 +220,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editText.setText("");
 
     }
-    void Downloaduserphoto(){
+
+    void Downloaduserphoto() {
         // Create a reference with an initial file path and name
-        StorageReference profile = storageReference.child("image/profile/"+userID);
-        long MaxBYTES = 1024*1024;
+        StorageReference profile = storageReference.child("image/profile/" + userID);
+        long MaxBYTES = 1024 * 1024;
         profile.getBytes(MaxBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 profile_pic.setImageBitmap(bitmap);
-                Toast.makeText(MainActivity.this,"Found",Toast.LENGTH_LONG).show();
-
-
+                Toast.makeText(MainActivity.this, "Found", Toast.LENGTH_LONG).show();
 
 
             }
@@ -222,11 +239,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onFailure(@NonNull Exception e) {
 
-                Toast.makeText(MainActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         });
 
+    }
+
+    void gettodaycount(){
+        firebaseFirestore.collection(today_firebase).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                today.setText("Today "+task.getResult().size());
+
+            }
+        });
     }
 
 }
