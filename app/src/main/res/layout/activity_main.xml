@@ -23,7 +23,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="91dp"
-                android:onClick="logo"
+
                 app:srcCompat="@drawable/golds" />
 
             <androidx.cardview.widget.CardView

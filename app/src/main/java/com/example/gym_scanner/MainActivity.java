@@ -34,8 +34,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ImageView profile_pic;
     String today_firebase;
     String time;
+    List<String> currentuserslist = new ArrayList<>();
+    Map<String, Integer> currentMap = new HashMap<>();
 
 
     @Override
@@ -78,11 +82,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         today_firebase = dayofmonth + "-" + month + "-" + year;
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
-        time=hour+":"+min;
-        System.out.println(time);
 
+        time = hour + ":" + min;
 
-        System.out.println(today_firebase);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         editText.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-       // update_today();
+        // update_today();
         gettodaycount();
 
 
@@ -118,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     // Get the results:
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -127,41 +131,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
 
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                userID = result.getContents();
-                users_today++;
-                savetoday();
+                if (result.getContents().contains("//")) {
+                    Toast.makeText(this, "Wrong QR", Toast.LENGTH_LONG).show();
+                } else {
+                    userID = result.getContents();
 
-                System.out.println(users_today + "check");
-
-                lastuser_id.setText(userID);
-
-                //Getting the username from the scanned ID
-                DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
-                documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-
-                        lastuser_name.setText(value.getString("fname"));
-                        username = value.getString("fname");
-
-                        //Adding current users
-                        DocumentReference documentReference1 = firebaseFirestore.collection(today_firebase).document(userID);
-                        Map<String, Object> currentusers = new HashMap<>();
-                        currentusers.put("name", username);
-                        currentusers.put("userid", userID);
-                        currentusers.put("time",time);
-
-                        documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    //Getting the username from the scanned ID
+                    try {
+                        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+                        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                             @Override
-                            public void onSuccess(Void unused) {
+                            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                lastuser_name.setText(value.getString("fname"));
+                                username = value.getString("fname") + " " + value.getString("lname");
+                                if (value.getString("fname")!=null){
+                                    //Adding today users users
+                                    DocumentReference documentReference1 = firebaseFirestore.collection(today_firebase).document(userID);
+                                    Map<String, Object> currentusers = new HashMap<>();
+                                    currentusers.put("name", username);
+                                    currentusers.put("userid", userID);
+                                    currentusers.put("time", time);
+                                    documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            lastuser_id.setText(userID);
 
-                                Downloaduserphoto();
+                                            Downloaduserphoto();
+
+
+                                        }
+                                    });
+
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Wrong QR", Toast.LENGTH_LONG).show();
+                                    lastuser_id.setText("Wrong");
+
+
+
+                                }
+
 
 
                             }
                         });
+                    } catch (Exception e){
+
                     }
-                });
+
+
+
+                }
+
+
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -175,14 +196,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
-    void savetoday() {
-
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("today", users_today);
-        editor.commit();
-
-    }
 
     void update_today() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -192,16 +205,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void logo(View view) {
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        users_today = 0;
-        editor.clear();
-        today.setText("Today " + users_today);
-        savetoday();
-        System.out.println(users_today);
-
-    }
 
     public void send(View view) {
         sendmessage();
@@ -246,17 +249,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    void gettodaycount(){
+    void gettodaycount() {
         firebaseFirestore.collection(today_firebase).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                today.setText("Today "+task.getResult().size());
+                today.setText("Today " + task.getResult().size());
 
             }
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gettodaycount();
+    }
 }
 
 
