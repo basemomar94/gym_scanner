@@ -15,8 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gym_scanner">
         <activity
+            android:name=".User_Info"
+            android:exported="false"
+            android:parentActivityName=".currentusers"
+            />
+        <activity
             android:name=".currentusers"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true">
