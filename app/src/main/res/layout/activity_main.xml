@@ -186,54 +186,21 @@
                 android:textColor="@color/blue"
                 android:textStyle="bold" />
 
-            <androidx.cardview.widget.CardView
+            <Button
+                android:id="@+id/gotonoti"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:cardCornerRadius="5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/banner_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:ems="10"
-                        android:hint="title"
-                        android:inputType="textShortMessage|textPersonName"
-                        android:minHeight="48dp" />
-
-                    <EditText
-                        android:id="@+id/announcemt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:ems="10"
-                        android:hint="send your announcement"
-                        android:minHeight="48dp" />
-
-                    <Button
-                        android:id="@+id/Send"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="3dp"
-                        android:layout_marginBottom="5dp"
-                        android:background="@color/yellow"
-                        android:gravity="center"
-                        android:onClick="send"
-                        android:text="Send"
-                        android:textColor="@color/blue"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/yellow"
+                android:gravity="center"
+                android:onClick="send"
+                android:text="Notification Panel"
+                android:textColor="@color/blue"
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 

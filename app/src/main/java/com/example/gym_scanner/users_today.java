@@ -25,7 +25,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class currentusers extends AppCompatActivity {
+public class users_today extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
@@ -71,7 +71,7 @@ public class currentusers extends AppCompatActivity {
         date_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(currentusers.this,User_Info.class);
+                Intent intent = new Intent(users_today.this,User_Info.class);
                 startActivity(intent);
             }
         });
@@ -93,7 +93,7 @@ public class currentusers extends AppCompatActivity {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 User user = documentSnapshot.toObject(User.class);
                 String userIDD = documentSnapshot.getId();
-                Intent intent = new Intent(currentusers.this,User_Info.class);
+                Intent intent = new Intent(users_today.this,User_Info.class);
                 intent.putExtra("user",userIDD);
                 startActivity(intent);
 
@@ -132,7 +132,7 @@ public class currentusers extends AppCompatActivity {
 
             firebaseAdapter.startListening();
             date_textview.setText("Please enter a date");
-            Toast.makeText(currentusers.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(users_today.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
     }
@@ -150,7 +150,7 @@ public class currentusers extends AppCompatActivity {
         });
     }
     void goto_info(){
-        Intent intent = new Intent(currentusers.this,User_Info.class);
+        Intent intent = new Intent(users_today.this,User_Info.class);
         startActivity(intent);
     }
 

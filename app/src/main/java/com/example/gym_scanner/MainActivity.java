@@ -3,14 +3,12 @@ package com.example.gym_scanner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -87,13 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        editText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendmessage();
 
-            }
-        });
 
         // update_today();
         gettodaycount();
@@ -191,38 +183,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     public void goToUsers(View view) {
-        Intent intent = new Intent(MainActivity.this, com.example.gym_scanner.currentusers.class);
+        Intent intent = new Intent(MainActivity.this, com.example.gym_scanner.users_today.class);
         intent.putExtra("userid", userID);
         startActivity(intent);
     }
 
 
-    void update_today() {
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        users_today = sharedPreferences.getInt("today", Integer.parseInt("0"));
-        today.setText("Today " + users_today);
-
-
-    }
 
 
     public void send(View view) {
-        sendmessage();
+
+        Intent intent = new Intent(MainActivity.this,Notification_panel.class);
+        startActivity(intent);
     }
 
-    void sendmessage() {
-        DocumentReference documentReference = firebaseFirestore.collection("message").document("message");
-        Map<String, Object> message = new HashMap<>();
-        message.put("message", editText.getText().toString().trim());
-        documentReference.set(message).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
 
-            }
-        });
-        editText.setText("");
-
-    }
 
     void Downloaduserphoto() {
         // Create a reference with an initial file path and name
