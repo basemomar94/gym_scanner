@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -134,60 +135,73 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     Toast.makeText(this, "Wrong QR", Toast.LENGTH_LONG).show();
                 } else {
                     userID = result.getContents();
+                    firebaseFirestore.collection(today_firebase).document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.getResult().exists()){
+                                Toast.makeText(Dashboard.this,"This user has already been  scanned today",Toast.LENGTH_LONG).show();
+                                lastuser_name.setText("This user has already been  scanned today");
 
-                    //Getting the username from the scanned ID
-                    try {
-                        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
-                        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                lastuser_name.setText(value.getString("fname"));
-                                username = value.getString("fname") + " " + value.getString("lname");
-                                if (value.getString("fname") != null) {
-                                    //Adding users to new DATABASE
-                                    DocumentReference documentReference2 = firebaseFirestore.collection(username).document(today_firebase);
-                                    Map<String, Object> userstoday = new HashMap<>();
-                                    userstoday.put("Admin", adminname);
-                                    documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            } else {
+                                //Getting the username from the scanned ID
+
+                                try {
+                                    DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+                                    documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
+                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                            lastuser_name.setText(value.getString("fname"));
+                                            username = value.getString("fname") + " " + value.getString("lname");
+                                            if (value.getString("fname") != null) {
+                                                //Adding users to new DATABASE
+                                                DocumentReference documentReference2 = firebaseFirestore.collection(username).document(today_firebase);
+                                                Map<String, Object> userstoday = new HashMap<>();
+                                                userstoday.put("Admin", adminname);
+                                                documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                                    }
+                                                });
+
+
+                                                //Adding today users users
+                                                DocumentReference documentReference1 = firebaseFirestore.collection(today_firebase).document(userID);
+                                                Map<String, Object> currentusers = new HashMap<>();
+                                                currentusers.put("name", username);
+                                                currentusers.put("userid", userID);
+                                                currentusers.put("time", time);
+                                                currentusers.put("admin",adminname);
+                                                documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        lastuser_id.setText(userID);
+
+
+                                                        Downloaduserphoto();
+
+
+                                                    }
+                                                });
+
+                                            } else {
+                                                Toast.makeText(Dashboard.this, "Wrong QR", Toast.LENGTH_LONG).show();
+                                                lastuser_id.setText("Wrong");
+
+
+                                            }
+
 
                                         }
                                     });
-
-
-                                    //Adding today users users
-                                    DocumentReference documentReference1 = firebaseFirestore.collection(today_firebase).document(userID);
-                                    Map<String, Object> currentusers = new HashMap<>();
-                                    currentusers.put("name", username);
-                                    currentusers.put("userid", userID);
-                                    currentusers.put("time", time);
-                                    currentusers.put("admin",adminname);
-                                    documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            lastuser_id.setText(userID);
-
-
-                                            Downloaduserphoto();
-
-
-                                        }
-                                    });
-
-                                } else {
-                                    Toast.makeText(Dashboard.this, "Wrong QR", Toast.LENGTH_LONG).show();
-                                    lastuser_id.setText("Wrong");
-
+                                } catch (Exception e) {
 
                                 }
-
-
                             }
-                        });
-                    } catch (Exception e) {
+                        }
+                    });
 
-                    }
+
 
 
                 }
