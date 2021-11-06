@@ -10,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="8dp"
         app:cardCornerRadius="5dp">
 
         <LinearLayout
@@ -21,14 +21,14 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
+                android:layout_margin="8dp"
                 app:cardBackgroundColor="#E1DDDD">
 
                 <TextView
                     android:id="@+id/current_message"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
+                    android:layout_margin="8dp"
                     android:text="Loading..."
                     android:textColor="@color/blue"
                     android:textSize="16sp" />
@@ -38,7 +38,7 @@
                 android:id="@+id/announcemt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
+                android:layout_margin="8dp"
                 android:ems="10"
                 android:hint="send your announcement"
                 android:minHeight="48dp" />
@@ -48,14 +48,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="3dp"
-                android:layout_marginBottom="5dp"
+                android:layout_margin="8dp"
                 android:background="@color/yellow"
                 android:gravity="center"
                 android:onClick="send"
                 android:text="Send"
+                android:textColor="@color/blue"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/send"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:background="@color/yellow"
+                android:gravity="center"
+                android:onClick="Delete"
+                android:text="Delete Current Message"
                 android:textColor="@color/blue"
                 android:textStyle="bold" />
 

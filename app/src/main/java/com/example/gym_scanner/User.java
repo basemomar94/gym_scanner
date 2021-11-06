@@ -4,23 +4,9 @@ public class User {
     String name;
     String userid;
     String time;
+    String admin="Bassem";
 
     public User() {
-    }
-
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public User(String name, String userid, String time) {
-        this.name = name;
-        this.userid = userid;
-        this.time=time;
 
     }
 
@@ -40,7 +26,26 @@ public class User {
         this.userid = userid;
     }
 
+    public String getTime() {
+        return time;
+    }
 
+    public void setTime(String time) {
+        this.time = time;
+    }
 
+    public String getAdmin() {
+        return admin;
+    }
 
+    public void setAdmin(String admin) {
+        this.admin = admin;
+    }
+
+    public User(String name, String userid, String time, String admin) {
+        this.name = name;
+        this.userid = userid;
+        this.time = time;
+        this.admin = admin;
+    }
 }

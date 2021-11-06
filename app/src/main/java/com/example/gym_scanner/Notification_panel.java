@@ -1,9 +1,11 @@
 package com.example.gym_scanner;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ public class Notification_panel extends AppCompatActivity {
     FirebaseFirestore firebaseFirestore;
     EditText announcement;
     TextView current_ann;
+    String message;
 
 
     @Override
@@ -33,6 +36,9 @@ public class Notification_panel extends AppCompatActivity {
         announcement=findViewById(R.id.announcemt);
         current_ann=findViewById(R.id.current_message);
         getcurrent_message();
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.setTitle("Notification Panel");
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     public void send(View view) {
@@ -42,9 +48,12 @@ public class Notification_panel extends AppCompatActivity {
     }
 
     void sendmessage() {
+
+
         DocumentReference documentReference = firebaseFirestore.collection("message").document("message");
         Map<String, Object> message = new HashMap<>();
         message.put("message", announcement.getText().toString().trim());
+
         documentReference.set(message).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -65,5 +74,20 @@ public class Notification_panel extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void Delete(View view) {
+        DocumentReference documentReference = firebaseFirestore.collection("message").document("message");
+        Map<String, Object> message = new HashMap<>();
+        message.put("message", "");
+
+        documentReference.set(message).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        });
+        announcement.setText("");
+
     }
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="8dp"
     android:orientation="vertical"
     tools:context=".users_today">
 
@@ -22,7 +23,7 @@
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
+                android:layout_margin="8dp"
                 android:ems="10"
                 android:hint="dd-mm-yy"
                 android:inputType="date" />
@@ -31,7 +32,7 @@
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
+                android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:background="@color/yellow"
                 android:onClick="search"
@@ -44,7 +45,7 @@
             android:id="@+id/date_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
+            android:layout_margin="8dp"
             android:text="Loading..."
             android:textColor="#000000"
             android:textSize="20sp"

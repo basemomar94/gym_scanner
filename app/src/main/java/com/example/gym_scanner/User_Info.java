@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.AppBarLayout;
@@ -22,6 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -32,8 +36,11 @@ public class User_Info extends AppCompatActivity {
     CollectionReference collectionReference;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
-    TextView username,id,phone,mail,birth;
+    TextView username,id,phone,mail,admin;
     ImageView imageView;
+    String pagetitle;
+    Firebase_Adapter_dates firebase_adapter_dates;
+
 
 
     @Override
@@ -44,7 +51,7 @@ public class User_Info extends AppCompatActivity {
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         userid = getIntent().getStringExtra("user");
-        actionBar.setTitle("User information");
+        actionBar.setTitle(userid);
 
         firebaseFirestore=FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -58,24 +65,6 @@ public class User_Info extends AppCompatActivity {
 
 
 
-        try {
-            DocumentReference documentReference =firebaseFirestore.collection("users").document(userid);
-            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                @Override
-                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-
-                    username.setText( "User name : "+ value.getString("fname")+" "+value.getString("lname"));
-                    id.setText("User id : "+userid);
-                    phone.setText("Phone : "+ value.getString("phone"));
-                    mail.setText("mail : "+value.getString("mail"));
-
-                    Toast.makeText(User_Info.this, value.getString("fname"), Toast.LENGTH_LONG).show();
-
-
-                }
-            });
-
-        } catch (Exception e){}
 
 
     }
@@ -84,6 +73,27 @@ public class User_Info extends AppCompatActivity {
     protected void onStart() {
 
         super.onStart();
+        setupRecycle();
+
+        try {
+            DocumentReference documentReference =firebaseFirestore.collection("users").document(userid);
+            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    pagetitle=( "User name : "+ value.getString("fname")+" "+value.getString("lname"));
+
+                    username.setText( "User name : "+ value.getString("fname")+" "+value.getString("lname"));
+                    id.setText("User id : "+userid);
+                    phone.setText("Phone : "+ value.getString("phone"));
+                    mail.setText("mail : "+value.getString("mail"));
+
+
+
+
+                }
+            });
+
+        } catch (Exception e){}
 
         System.out.println(userid+"TEST");
         Downloaduserphoto();
@@ -105,7 +115,7 @@ public class User_Info extends AppCompatActivity {
 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 imageView.setImageBitmap(bitmap);
-                Toast.makeText(User_Info.this, "Found", Toast.LENGTH_LONG).show();
+                
 
 
             }
@@ -117,6 +127,17 @@ public class User_Info extends AppCompatActivity {
 
             }
         });
+
+    }
+    void setupRecycle (){
+        collectionReference = FirebaseFirestore.getInstance().collection(userid);
+        Query query = collectionReference;
+        FirestoreRecyclerOptions<date_item> options = new FirestoreRecyclerOptions.Builder<date_item>().setQuery(query,date_item.class).build();
+        firebase_adapter_dates = new Firebase_Adapter_dates(options);
+        RecyclerView recyclerView = findViewById(R.id.date_recycle);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(firebase_adapter_dates);
 
     }
 }

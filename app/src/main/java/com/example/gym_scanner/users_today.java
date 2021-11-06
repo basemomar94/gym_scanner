@@ -42,7 +42,7 @@ public class users_today extends AppCompatActivity {
     TextView user;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     CollectionReference collectionReference;
-    Firebase_Adapter firebaseAdapter;
+    Firebase_Adapter_users firebaseAdapter;
 
 
     @Override
@@ -83,12 +83,15 @@ public class users_today extends AppCompatActivity {
         collectionReference = firebaseFirestore.collection(today_firebase);
         Query query = collectionReference.orderBy("name", Query.Direction.ASCENDING);
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>().setQuery(query, User.class).build();
-        firebaseAdapter = new Firebase_Adapter(options);
+        firebaseAdapter = new Firebase_Adapter_users(options);
         RecyclerView recyclerView = findViewById(R.id.users_recycle);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(firebaseAdapter);
-        firebaseAdapter.setOnitemClick(new Firebase_Adapter.OnitemClick() {
+
+
+
+        firebaseAdapter.setOnitemClick(new Firebase_Adapter_users.OnitemClick() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 User user = documentSnapshot.toObject(User.class);

@@ -26,7 +26,7 @@
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
+                    android:layout_margin="8dp"
                     android:text="user name"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -35,15 +35,22 @@
                     android:id="@+id/user_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
+                    android:layout_marginLeft="8dp"
                     android:text="3dz8jx8jd83j83dj8d3" />
 
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
+                    android:layout_marginLeft="8dp"
                     android:text="9:25 pm" />
+
+                <TextView
+                    android:id="@+id/admin_re"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="admin" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

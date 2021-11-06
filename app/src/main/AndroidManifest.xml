@@ -14,9 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gym_scanner">
+        <activity android:name=".Dashboard"
+            android:exported="false"/>
+
         <activity
             android:name=".Notification_panel"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Dashboard" />
         <activity
             android:name=".User_Info"
             android:exported="false"
@@ -24,9 +28,9 @@
         <activity
             android:name=".users_today"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".Dashboard" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

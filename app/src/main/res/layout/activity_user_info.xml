@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
 
     android:layout_margin="5dp"
     android:orientation="vertical"
@@ -12,8 +12,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:layout_marginBottom="5dp"
+        android:layout_margin="8dp"
         app:cardCornerRadius="5dp">
 
         <LinearLayout
@@ -73,8 +72,23 @@
                     android:textColor="@color/blue"
                     android:textSize="12sp" />
 
+                <TextView
+                    android:id="@+id/admin_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+
+                    android:text="TextView"
+                    android:textColor="@color/blue"
+                    android:textSize="12sp" />
+
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/date_recycle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
