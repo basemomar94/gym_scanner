@@ -203,8 +203,8 @@
                 android:layout_margin="8dp"
                 android:background="@color/yellow"
                 android:gravity="center"
-                android:onClick="activate"
-                android:text="Activate"
+                android:onClick="goto_mangaAccounts"
+                android:text="Manage Accounts"
                 android:textColor="@color/blue"
                 android:textStyle="bold" />
 

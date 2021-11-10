@@ -18,312 +18,350 @@
         android:textColor="@color/blue"
         android:textStyle="bold" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/usercard"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:visibility="gone">
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/enterd_userid"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Enter user id"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:onClick="search"
+            android:text="Search" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/usercard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="8dp"
-                    app:srcCompat="@drawable/user1" />
+                android:layout_margin="8dp"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <FrameLayout
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="8dp"
+                            app:srcCompat="@drawable/user1" />
 
                         <LinearLayout
-                            android:id="@+id/info_layout"
-
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:visibility="visible"
-                            android:weightSum="4">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/status"
+                            <FrameLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="14sp" />
+                                android:layout_height="match_parent">
 
-                            <TextView
-                                android:id="@+id/userid"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="14sp" />
+                                <LinearLayout
+                                    android:id="@+id/info_layout"
 
-                            <TextView
-                                android:id="@+id/fname_right"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="14sp" />
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:visibility="visible"
+                                    android:weightSum="4">
 
-                            <TextView
-                                android:id="@+id/lname_right"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="14sp" />
+                                    <TextView
+                                        android:id="@+id/status"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="8dp"
+                                        android:layout_weight="1"
+                                        android:text="TextView"
+                                        android:textSize="14sp" />
 
-                            <TextView
-                                android:id="@+id/phone_right"
+                                    <TextView
+                                        android:id="@+id/userid"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="8dp"
+                                        android:layout_weight="1"
+                                        android:text="TextView"
+                                        android:textSize="14sp" />
 
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="14sp" />
+                                    <TextView
+                                        android:id="@+id/fname_right"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="8dp"
+                                        android:layout_weight="1"
+                                        android:text="TextView"
+                                        android:textSize="14sp" />
 
-                            <TextView
-                                android:id="@+id/subscribtion_date_right"
+                                    <TextView
+                                        android:id="@+id/lname_right"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="8dp"
+                                        android:layout_weight="1"
+                                        android:text="TextView"
+                                        android:textSize="14sp" />
 
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="14sp" />
+                                    <TextView
+                                        android:id="@+id/phone_right"
 
-                            <TextView
-                                android:id="@+id/days_right"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="8dp"
+                                        android:layout_weight="1"
+                                        android:text="TextView"
+                                        android:textSize="14sp" />
 
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:textSize="14sp" />
+                                    <TextView
+                                        android:id="@+id/subscribtion_date_right"
+
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="8dp"
+                                        android:layout_weight="1"
+                                        android:text="TextView"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:id="@+id/days_right"
+
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="8dp"
+                                        android:layout_weight="1"
+                                        android:text="TextView"
+                                        android:textSize="14sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/edit_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:visibility="gone"
+                                    tools:visibility="gone">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:weightSum="2">
+
+                                        <TextView
+
+                                            android:id="@+id/textView4"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_margin="8dp"
+                                            android:layout_weight="1"
+                                            android:text="First name"
+                                            android:textColor="@color/blue"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold" />
+
+                                        <EditText
+                                            android:id="@+id/fname_edit"
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="48dp"
+                                            android:layout_margin="8dp"
+                                            android:layout_weight="1"
+                                            android:ems="10"
+                                            android:inputType="textPersonName"
+                                            android:text="Name"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:weightSum="2">
+
+                                        <TextView
+
+                                            android:id="@+id/textView2"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_margin="8dp"
+                                            android:layout_weight="1"
+                                            android:text="Last name"
+                                            android:textColor="@color/blue"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold" />
+
+                                        <EditText
+                                            android:id="@+id/lname_edit"
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="48dp"
+                                            android:layout_margin="8dp"
+                                            android:layout_weight="1"
+                                            android:ems="10"
+                                            android:inputType="textPersonName"
+                                            android:text="Name"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:weightSum="2">
+
+                                        <TextView
+
+                                            android:id="@+id/textView5"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_margin="8dp"
+                                            android:layout_weight="1"
+                                            android:text="Phone "
+                                            android:textColor="@color/blue"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold" />
+
+                                        <EditText
+                                            android:id="@+id/phone_edit"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="8dp"
+                                            android:layout_weight="1"
+                                            android:ems="10"
+                                            android:inputType="textPersonName"
+                                            android:minHeight="48dp"
+                                            android:text="Name"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:weightSum="2">
+
+                                        <TextView
+                                            android:id="@+id/textView6"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_margin="8dp"
+                                            android:layout_weight="1"
+                                            android:text="date"
+                                            android:textColor="@color/blue"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold" />
+
+                                        <EditText
+                                            android:id="@+id/subscribtion_edit"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="8dp"
+                                            android:layout_weight="1"
+                                            android:ems="10"
+                                            android:inputType="textPersonName"
+                                            android:minHeight="48dp"
+                                            android:text="Name"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:weightSum="2">
+
+                                        <TextView
+                                            android:id="@+id/textView7"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_margin="8dp"
+                                            android:layout_weight="1"
+                                            android:text="Days"
+                                            android:textColor="@color/blue"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold" />
+
+                                        <EditText
+                                            android:id="@+id/days_edit"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_margin="8dp"
+                                            android:layout_weight="1"
+                                            android:ems="10"
+                                            android:inputType="textPersonName"
+                                            android:minHeight="48dp"
+                                            android:text="Name"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+
+                                </LinearLayout>
+                            </FrameLayout>
 
                         </LinearLayout>
+                    </LinearLayout>
 
-                        <LinearLayout
-                            android:id="@+id/edit_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:visibility="invisible">
+                    <Button
+                        android:id="@+id/edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:onClick="Edit"
+                        android:text="Edit Details"
+                        android:textColor="@color/blue"
+                        android:textStyle="bold" />
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="2">
-
-                                <TextView
-
-                                    android:id="@+id/textView4"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="8dp"
-                                    android:layout_weight="1"
-                                    android:text="First name"
-                                    android:textColor="@color/blue"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-
-                                <EditText
-                                    android:id="@+id/fname_edit"
-
-                                    android:layout_width="match_parent"
-                                    android:layout_height="48dp"
-                                    android:layout_margin="8dp"
-                                    android:layout_weight="1"
-                                    android:ems="10"
-                                    android:inputType="textPersonName"
-                                    android:text="Name"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="2">
-
-                                <TextView
-
-                                    android:id="@+id/textView2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="8dp"
-                                    android:layout_weight="1"
-                                    android:text="Last name"
-                                    android:textColor="@color/blue"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-
-                                <EditText
-                                    android:id="@+id/lname_edit"
-
-                                    android:layout_width="match_parent"
-                                    android:layout_height="48dp"
-                                    android:layout_margin="8dp"
-                                    android:layout_weight="1"
-                                    android:ems="10"
-                                    android:inputType="textPersonName"
-                                    android:text="Name"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="2">
-
-                                <TextView
-
-                                    android:id="@+id/textView5"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="8dp"
-                                    android:layout_weight="1"
-                                    android:text="Phone "
-                                    android:textColor="@color/blue"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-
-                                <EditText
-                                    android:id="@+id/phone_edit"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="8dp"
-                                    android:layout_weight="1"
-                                    android:ems="10"
-                                    android:inputType="textPersonName"
-                                    android:minHeight="48dp"
-                                    android:text="Name"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="2">
-
-                                <TextView
-                                    android:id="@+id/textView6"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="8dp"
-                                    android:layout_weight="1"
-                                    android:text="date"
-                                    android:textColor="@color/blue"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-
-                                <EditText
-                                    android:id="@+id/subscribtion_edit"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="8dp"
-                                    android:layout_weight="1"
-                                    android:ems="10"
-                                    android:inputType="textPersonName"
-                                    android:minHeight="48dp"
-                                    android:text="Name"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:weightSum="2">
-
-                                <TextView
-                                    android:id="@+id/textView7"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="8dp"
-                                    android:layout_weight="1"
-                                    android:text="Days"
-                                    android:textColor="@color/blue"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-
-                                <EditText
-                                    android:id="@+id/days_edit"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_margin="8dp"
-                                    android:layout_weight="1"
-                                    android:ems="10"
-                                    android:inputType="textPersonName"
-                                    android:minHeight="48dp"
-                                    android:text="Name"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </FrameLayout>
-
+                    <Button
+                        android:id="@+id/activate_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:background="@color/green"
+                        android:onClick="activateNow"
+                        android:text="Activate"
+                        android:textColor="@color/blue"
+                        android:textStyle="bold" />
                 </LinearLayout>
-            </LinearLayout>
 
-            <Button
-                android:id="@+id/edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:onClick="Edit"
-                android:text="Edit Details"
-                android:textColor="@color/blue"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/button5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@color/green"
-                android:onClick="activateNow"
-                android:text="Activate"
-                android:textColor="@color/blue"
-                android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+    </ScrollView>
 
 </LinearLayout>

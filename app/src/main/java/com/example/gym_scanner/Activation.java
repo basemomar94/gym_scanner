@@ -6,12 +6,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.gym_scanner.databinding.ActivityActivationBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -33,6 +35,7 @@ public class Activation extends AppCompatActivity {
     String activation;
     ActivityActivationBinding binding;
     boolean Editing;
+    boolean status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +93,7 @@ public class Activation extends AppCompatActivity {
     }
 
     public void Edit(View view) {
-        updatinginfo();
+
         System.out.println("click");
         System.out.println(Editing);
         if (!Editing){
@@ -101,6 +104,7 @@ public class Activation extends AppCompatActivity {
             Editing=true;
 
         } else {
+            updatinginfo();
             binding.editLayout.setVisibility(View.INVISIBLE);
             binding.infoLayout.setVisibility(View.VISIBLE);
             binding.edit.setText("Edit");
@@ -117,9 +121,15 @@ public class Activation extends AppCompatActivity {
                 String activation=value.getString("activation");
                 System.out.println(activation);
                 if (activation.equals("true")){
+                    status=true;
+
                     binding.status.setText("This account is active");
+                    binding.status.setTextColor(Color.GREEN);
+                    binding.activateButton.setText("Deactivate");
 
                 } else {
+                    status=false;
+                    binding.status.setTextColor(Color.RED);
                     binding.status.setText("This account is inactive");
                 }
                 binding.userid.setText("User ID : "+userID);
@@ -135,7 +145,8 @@ public class Activation extends AppCompatActivity {
                 binding.subscribtionDateRight.setText("Subscribtion date : "+value.getString("date"));
                 binding.subscribtionEdit.setText(value.getString("date"));
 
-             //   binding.daysRight.setText("number of days : "+value.getString("daysnumber"));
+               binding.daysRight.setText("number of days : "+value.getDouble("daysnumber").toString());
+               binding.daysEdit.setText(value.getDouble("daysnumber").toString());
 
 
 
@@ -145,9 +156,15 @@ public class Activation extends AppCompatActivity {
     }
 
     public void activateNow(View view) {
+
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
         Map<String, Object> add = new HashMap<>();
-        add.put("activation", "true");
+        if (!status){
+            add.put("activation", "true");
+        } else {
+            add.put("activation", "False");
+        }
+
         documentReference.update(add).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -159,19 +176,39 @@ public class Activation extends AppCompatActivity {
 
     }
     void updatinginfo (){
-        DocumentReference documentReference =firebaseFirestore.collection("users").document(userID);
-        Map<String,Object> update = new HashMap<>();
-        update.put("fname",binding.fnameEdit.getText().toString().trim());
-        update.put("lname",binding.lnameEdit.getText().toString().trim());
-        update.put("phone",binding.phoneEdit.getText().toString().trim());
-        update.put("date",binding.subscribtionEdit.getText().toString().trim());
-        update.put("daysnumber",binding.daysEdit.getText().toString().trim());
-        documentReference.update(update).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(Activation.this,"Updates were saved",Toast.LENGTH_LONG).show();
+        try {
+            System.out.println(userID+"Err");
+            DocumentReference documentReference =firebaseFirestore.collection("users").document(userID);
 
-            }
-        });
+            Map<String,Object> update = new HashMap<>();
+            update.put("fname",binding.fnameEdit.getText().toString().trim());
+            update.put("lname",binding.lnameEdit.getText().toString().trim());
+            update.put("phone",binding.phoneEdit.getText().toString().trim());
+            update.put("date",binding.subscribtionEdit.getText().toString().trim());
+            update.put("daysnumber",binding.daysEdit.getText());
+            documentReference.update(update).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Toast.makeText(Activation.this,"Updates were saved",Toast.LENGTH_LONG).show();
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(Activation.this,e.getMessage().toString(),Toast.LENGTH_LONG).show();
+
+                }
+            });
+        } catch (Exception e){
+            Toast.makeText(Activation.this,e.getMessage().toString(),Toast.LENGTH_LONG).show();
+
+        }
+
+    }
+
+    public void search(View view) {
+
+        userID=binding.enterdUserid.getText().toString().trim();
+        gettindata();
     }
 }

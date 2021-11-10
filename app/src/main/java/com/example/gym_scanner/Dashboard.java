@@ -351,8 +351,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     }
 
-    public void activate(View view) {
-        Intent intent = new Intent(Dashboard.this, Activation.class);
+    public void goto_mangaAccounts(View view) {
+        Intent intent = new Intent(Dashboard.this, Mangaments.class);
         startActivity(intent);
     }
 }

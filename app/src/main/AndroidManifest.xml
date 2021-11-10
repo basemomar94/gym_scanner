@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gym_scanner">
         <activity
+            android:name=".Mangaments"
+            android:exported="false" />
+        <activity
             android:name=".Renew"
             android:exported="false" />
         <activity
