@@ -14,9 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gym_scanner">
-        <activity android:name=".Dashboard"
-            android:exported="false"/>
-
+        <activity
+            android:name=".Renew"
+            android:exported="false" />
+        <activity
+            android:name=".Activation"
+            android:exported="false"
+            android:parentActivityName=".Dashboard" />
+        <activity
+            android:name=".Dashboard"
+            android:exported="false" />
         <activity
             android:name=".Notification_panel"
             android:exported="false"

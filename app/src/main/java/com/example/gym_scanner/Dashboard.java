@@ -34,11 +34,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Dashboard extends AppCompatActivity implements View.OnClickListener {
 
@@ -66,7 +71,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         binding = ActivityDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        now = findViewById(R.id.now);
         today = findViewById(R.id.today);
         lastuser_name = findViewById(R.id.lastuser_name);
         lastuser_id = findViewById(R.id.lastuser_id);
@@ -85,9 +89,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         int min = calendar.get(Calendar.MINUTE);
         admin = findViewById(R.id.admin);
         time = hour + ":" + min;
-        SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
-        adminname=sharedPreferences.getString("log",null);
-        if (adminname!=null){
+        SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        adminname = sharedPreferences.getString("log", null);
+        if (adminname != null) {
             admin.setText(adminname);
         }
 
@@ -135,11 +139,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     Toast.makeText(this, "Wrong QR", Toast.LENGTH_LONG).show();
                 } else {
                     userID = result.getContents();
+                    System.out.println(userID);
                     firebaseFirestore.collection(today_firebase).document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.getResult().exists()){
-                                Toast.makeText(Dashboard.this,"This user has already been  scanned today",Toast.LENGTH_LONG).show();
+                            if (task.getResult().exists()) {
+                                Toast.makeText(Dashboard.this, "This user has already been  scanned today", Toast.LENGTH_LONG).show();
                                 lastuser_name.setText("This user has already been  scanned today");
 
                             } else {
@@ -152,6 +157,31 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                         public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                             lastuser_name.setText(value.getString("fname"));
                                             username = value.getString("fname") + " " + value.getString("lname");
+                                            String sub = value.getString("date");
+                                            Double daysofsub = value.getDouble("daysnumber");
+                                            binding.remaingDays.setText(daysofsub.toString());
+                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                                            try {
+                                                Date sub_date = simpleDateFormat.parse(sub);
+                                                String today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                                                Date today_date = simpleDateFormat.parse(today_Date);
+                                                long remaing = Math.abs(today_date.getTime() - sub_date.getTime());
+                                                int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
+                                                System.out.println(daysofsub);
+                                                System.out.println(diffenrence);
+                                                int actual_remaining = (int) (daysofsub - diffenrence);
+                                                Toast.makeText(Dashboard.this, actual_remaining, Toast.LENGTH_LONG).show();
+                                                binding.remaingDays.setText(actual_remaining);
+                                                System.out.println(actual_remaining + "REMAIN");
+
+
+                                                System.out.println(diffenrence);
+                                            } catch (Exception e) {
+                                                binding.remaingDays.setText("Wrong");
+
+                                            }
+
+
                                             if (value.getString("fname") != null) {
                                                 //Adding users to new DATABASE
                                                 DocumentReference documentReference2 = firebaseFirestore.collection(username).document(today_firebase);
@@ -171,7 +201,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                                 currentusers.put("name", username);
                                                 currentusers.put("userid", userID);
                                                 currentusers.put("time", time);
-                                                currentusers.put("admin",adminname);
+                                                currentusers.put("admin", adminname);
                                                 documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void unused) {
@@ -190,8 +220,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
 
                                             }
-
-
                                         }
                                     });
                                 } catch (Exception e) {
@@ -202,11 +230,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     });
 
 
-
-
                 }
-
-
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -271,8 +295,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     public void logout(View view) {
-        
-
 
 
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
@@ -285,6 +307,54 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     }
 
+    public void test(View view) {
+        DocumentReference documentReference = firebaseFirestore.collection("users").document("FD96yY0UtITduFmnh6zDEy0KvSE3");
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                String subdate = value.getString("date");
+                Double daysofsub = value.getDouble("daysnumber");
+                System.out.println(subdate);
+                System.out.println(daysofsub);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                String today_D = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                System.out.println(today_D);
+                Date today_date = null;
+                try {
+                    today_date = simpleDateFormat.parse(today_D);
+                    System.out.println(today_D);
+
+                } catch (ParseException e) {
+
+                }
+
+
+                try {
+
+
+                    Date subdate_date = simpleDateFormat.parse(subdate);
+                    long remainig = Math.abs(today_date.getTime() - subdate_date.getTime());
+                    int difference = (int) TimeUnit.DAYS.convert(remainig, TimeUnit.MILLISECONDS);
+                    int actual_remaing = (int) (daysofsub - difference);
+                    System.out.println(actual_remaing);
+                    binding.remaingDays.setText(actual_remaing + "days");
+                    System.out.println(actual_remaing + "Salah");
+
+
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+
+
+            }
+        });
+
+    }
+
+    public void activate(View view) {
+        Intent intent = new Intent(Dashboard.this, Activation.class);
+        startActivity(intent);
+    }
 }
 
 
