@@ -28,11 +28,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Activation extends AppCompatActivity {
     String userID;
@@ -43,13 +45,17 @@ public class Activation extends AppCompatActivity {
     boolean status;
     StorageReference storageReference;
     FirebaseStorage firebaseStorage;
+    Double numberofdays;
+    String date;
+    int actual_remaining;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Editing=false;
+        Editing = false;
 
         super.onCreate(savedInstanceState);
-        binding=ActivityActivationBinding.inflate(getLayoutInflater());
+        binding = ActivityActivationBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -82,15 +88,12 @@ public class Activation extends AppCompatActivity {
                 gettindata();
 
 
-
             }
         }
 
     }
 
     public void newact(View view) {
-
-
 
 
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);
@@ -108,12 +111,12 @@ public class Activation extends AppCompatActivity {
 
         System.out.println("click");
         System.out.println(Editing);
-        if (!Editing){
+        if (!Editing) {
             System.out.println(false);
             binding.editLayout.setVisibility(View.VISIBLE);
             binding.infoLayout.setVisibility(View.INVISIBLE);
             binding.edit.setText("Save");
-            Editing=true;
+            Editing = true;
             binding.renew.setVisibility(View.INVISIBLE);
             binding.activateButton.setVisibility(View.INVISIBLE);
 
@@ -124,61 +127,64 @@ public class Activation extends AppCompatActivity {
             binding.edit.setText("Edit");
             binding.renew.setVisibility(View.VISIBLE);
             binding.activateButton.setVisibility(View.VISIBLE);
-            Editing=false;
+            Editing = false;
         }
 
     }
-    void gettindata (){
+
+    void gettindata() {
         binding.usercard.setVisibility(View.VISIBLE);
         Downloaduserphoto();
 
-        DocumentReference documentReference =firebaseFirestore.collection("users").document(userID);
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
 
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                String activation=value.getString("activation");
+                String activation = value.getString("activation");
                 System.out.println(activation);
-                if (activation.equals("true")){
-                    status=true;
+                if (activation.equals("true")) {
+                    status = true;
 
                     binding.status.setText("This account is active");
                     binding.status.setTextColor(Color.GREEN);
                     binding.activateButton.setText("Deactivate");
 
                 } else {
-                    status=false;
+                    status = false;
                     binding.status.setTextColor(Color.RED);
                     binding.status.setText("This account is inactive");
                 }
-                binding.userid.setText("User ID : "+userID);
-                binding.fnameRight.setText("first name : "+value.getString("fname"));
+                binding.userid.setText("User ID : " + userID);
+                binding.fnameRight.setText("first name : " + value.getString("fname"));
                 binding.fnameEdit.setText(value.getString("fname"));
 
-                binding.lnameRight.setText("last name : "+value.getString("lname"));
+                binding.lnameRight.setText("last name : " + value.getString("lname"));
                 binding.lnameEdit.setText(value.getString("lname"));
 
-                binding.phoneRight.setText("phone : "+value.getString("phone"));
+                binding.phoneRight.setText("phone : " + value.getString("phone"));
                 binding.phoneEdit.setText(value.getString("phone"));
 
-                binding.subscribtionDateRight.setText("Subscribtion date : "+value.getString("date"));
+                binding.subscribtionDateRight.setText("Subscribtion date : " + value.getString("date"));
                 binding.subscribtionEdit.setText(value.getString("date"));
+                date = value.getString("date");
 
-               binding.daysRight.setText("number of days : "+value.getDouble("daysnumber").toString());
-               binding.daysEdit.setText(value.getDouble("daysnumber").toString());
-
-
+                binding.daysRight.setText("number of days : " + value.getDouble("daysnumber").toString());
+                binding.daysEdit.setText(value.getDouble("daysnumber").toString());
+                numberofdays = value.getDouble("daysnumber");
+                calculate_remaing();
 
 
             }
         });
+
     }
 
     public void activateNow(View view) {
 
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
         Map<String, Object> add = new HashMap<>();
-        if (!status){
+        if (!status) {
             add.put("activation", "true");
         } else {
             add.put("activation", "False");
@@ -194,35 +200,36 @@ public class Activation extends AppCompatActivity {
 
 
     }
-    void updatinginfo (){
+
+    void updatinginfo() {
         try {
-            System.out.println(userID+"Err");
-            DocumentReference documentReference =firebaseFirestore.collection("users").document(userID);
+            System.out.println(userID + "Err");
+            DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
 
-            Map<String,Object> update = new HashMap<>();
+            Map<String, Object> update = new HashMap<>();
 
 
-            update.put("fname",binding.fnameEdit.getText().toString().trim());
-            update.put("lname",binding.lnameEdit.getText().toString().trim());
-            update.put("phone",binding.phoneEdit.getText().toString().trim());
-            update.put("date",binding.subscribtionEdit.getText().toString().trim());
+            update.put("fname", binding.fnameEdit.getText().toString().trim());
+            update.put("lname", binding.lnameEdit.getText().toString().trim());
+            update.put("phone", binding.phoneEdit.getText().toString().trim());
+            update.put("date", binding.subscribtionEdit.getText().toString().trim());
             Double days = Double.parseDouble(binding.daysEdit.getText().toString());
-            update.put("daysnumber",days);
+            update.put("daysnumber", days);
             documentReference.update(update).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(Activation.this,"Updates were saved",Toast.LENGTH_LONG).show();
+                    Toast.makeText(Activation.this, "Updates were saved", Toast.LENGTH_LONG).show();
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(Activation.this,e.getMessage().toString(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(Activation.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
 
                 }
             });
-        } catch (Exception e){
-            Toast.makeText(Activation.this,e.getMessage().toString(),Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(Activation.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
             System.out.println(e);
 
         }
@@ -231,9 +238,10 @@ public class Activation extends AppCompatActivity {
 
     public void search(View view) {
 
-        userID=binding.enterdUserid.getText().toString().trim();
+        userID = binding.enterdUserid.getText().toString().trim();
         gettindata();
     }
+
     void Downloaduserphoto() {
         System.out.println(userID);
 
@@ -242,7 +250,7 @@ public class Activation extends AppCompatActivity {
         try {
             // Create a reference with an initial file path and name
             StorageReference profile = storageReference.child("image/profile/" + userID);
-            System.out.println(profile.toString()+"profile");
+            System.out.println(profile.toString() + "profile");
             long MaxBYTES = 1024 * 1024;
             profile.getBytes(MaxBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
@@ -250,7 +258,6 @@ public class Activation extends AppCompatActivity {
 
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     binding.actPro.setImageBitmap(bitmap);
-
 
 
                 }
@@ -263,31 +270,30 @@ public class Activation extends AppCompatActivity {
                 }
             });
 
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(Activation.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        }
+    }
 
 
     public void test(View view) {
-        Downloaduserphoto();
+
     }
 
     void renew_setup() {
         String today_D = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
         Map<String, Object> edit = new HashMap<>();
-        Double days = Double.parseDouble(binding.daysNumber.getText().toString().trim());
+        Double days = Double.parseDouble(binding.daysNumber.getText().toString().trim())+actual_remaining;
         System.out.println(days);
-        edit.put("daysnumber",days);
-        edit.put("date",today_D);
-
+        edit.put("daysnumber", days);
+        edit.put("date", today_D);
 
 
         documentReference.update(edit).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(Activation.this,"Succecedd",Toast.LENGTH_LONG).show();
+                Toast.makeText(Activation.this, "Succecedd", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -296,5 +302,28 @@ public class Activation extends AppCompatActivity {
 
     public void renew_button(View view) {
         renew_setup();
+    }
+
+    void calculate_remaing() {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date date_Sub = simpleDateFormat.parse(date);
+            String today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+            Date today_date = simpleDateFormat.parse(today_Date);
+            long remaing = Math.abs(today_date.getTime() - date_Sub.getTime());
+            int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
+            actual_remaining = (int) (numberofdays - diffenrence);
+
+            System.out.println(actual_remaining);
+            //Toast.makeText(Activation.this,actual_remaining,Toast.LENGTH_LONG).show();
+            binding.remaingTx.setText("remaing days : " + actual_remaining);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }

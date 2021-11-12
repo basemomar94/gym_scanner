@@ -164,6 +164,16 @@
                                         android:text="TextView"
                                         android:textSize="14sp" />
 
+                                    <TextView
+                                        android:id="@+id/remaing_tx"
+
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="8dp"
+                                        android:layout_weight="1"
+                                        android:text="TextView"
+                                        android:textSize="14sp" />
+
                                 </LinearLayout>
 
                                 <LinearLayout
