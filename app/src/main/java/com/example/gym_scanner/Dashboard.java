@@ -47,12 +47,14 @@ import java.util.concurrent.TimeUnit;
 
 public class Dashboard extends AppCompatActivity implements View.OnClickListener {
 
+
     String userID;
     String username;
     FirebaseFirestore firebaseFirestore;
     TextView now, today, lastuser_name, lastuser_id;
     String dayofMonth = "1";
     final static String today_vistors = "today";
+    boolean card = false;
     int users_today;
     EditText editText;
     FirebaseStorage firebaseStorage;
@@ -65,6 +67,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     String adminname;
     TextView admin;
     String MY_PREFS_NAME = "gym";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +141,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 if (result.getContents().contains("//")) {
                     Toast.makeText(this, "Wrong QR", Toast.LENGTH_LONG).show();
                 } else {
+                    binding.visitorCard.setVisibility(View.VISIBLE);
                     userID = result.getContents();
                     System.out.println(userID);
                     firebaseFirestore.collection(today_firebase).document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -262,7 +266,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 profile_pic.setImageBitmap(bitmap);
-                Toast.makeText(Dashboard.this, "Found", Toast.LENGTH_LONG).show();
+
 
 
             }
@@ -278,14 +282,20 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     void gettodaycount() {
-        firebaseFirestore.collection(today_firebase).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        try {
+            firebaseFirestore.collection(today_firebase).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                today.setText("Today " + task.getResult().size());
 
-            }
-        });
+                  //  today.setText("Today " + task.getResult().size());
+
+                }
+            });
+        } catch (Exception e){
+            today.setText("Today " + e.getMessage());
+        }
+
     }
 
     @Override
@@ -352,7 +362,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     public void goto_mangaAccounts(View view) {
-        Intent intent = new Intent(Dashboard.this, Mangaments.class);
+        Intent intent = new Intent(Dashboard.this,Activation.class);
         startActivity(intent);
     }
 }

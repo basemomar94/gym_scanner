@@ -7,14 +7,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gym_scanner.databinding.ActivityUserInfoBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,6 +34,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.w3c.dom.Text;
+
 public class User_Info extends AppCompatActivity {
 
     String userid;
@@ -40,13 +47,15 @@ public class User_Info extends AppCompatActivity {
     ImageView imageView;
     String pagetitle;
     Firebase_Adapter_dates firebase_adapter_dates;
+    ActivityUserInfoBinding binding;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_info);
+        binding=ActivityUserInfoBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -55,7 +64,7 @@ public class User_Info extends AppCompatActivity {
 
         firebaseFirestore=FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        storageReference = firebaseStorage.getReference();
+
         storageReference = firebaseStorage.getReference();
         username=findViewById(R.id.name_info);
         id=findViewById(R.id.id_info);
@@ -67,10 +76,12 @@ public class User_Info extends AppCompatActivity {
 
 
 
+
     }
 
     @Override
     protected void onStart() {
+
 
         super.onStart();
         setupRecycle();
@@ -80,12 +91,12 @@ public class User_Info extends AppCompatActivity {
             documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                    pagetitle=( "User name : "+ value.getString("fname")+" "+value.getString("lname"));
+                    pagetitle=( value.getString("fname")+" "+value.getString("lname"));
 
-                    username.setText( "User name : "+ value.getString("fname")+" "+value.getString("lname"));
-                    id.setText("User id : "+userid);
-                    phone.setText("Phone : "+ value.getString("phone"));
-                    mail.setText("mail : "+value.getString("mail"));
+                    username.setText( value.getString("fname")+" "+value.getString("lname"));
+                    id.setText(userid);
+                    phone.setText(value.getString("phone"));
+                    mail.setText(value.getString("mail"));
 
 
 
@@ -139,5 +150,30 @@ public class User_Info extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(firebase_adapter_dates);
 
+    }
+
+
+    void copytoClip(TextView textView){
+        ClipboardManager _clipboard = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
+        _clipboard.setText(textView.getText());
+        Toast.makeText(User_Info.this,textView.getText(),Toast.LENGTH_LONG).show();
+
+
+    }
+
+    public void copy(View view) {
+
+
+        switch (view.getId()){
+            case R.id.name_info:copytoClip(binding.nameInfo);
+            break;
+            case R.id.id_info:copytoClip(binding.idInfo);
+            break;
+            case R.id.mail_info:copytoClip(binding.mailInfo);
+            break;
+            case R.id.phone_info:copytoClip(binding.phoneInfo);
+            break;
+
+        }
     }
 }

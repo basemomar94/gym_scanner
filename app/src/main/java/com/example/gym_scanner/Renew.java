@@ -48,15 +48,8 @@ public class Renew extends AppCompatActivity {
             } else {
                 userID = result.getContents();
                 Toast.makeText(this, "Scanned: " + userID, Toast.LENGTH_LONG).show();
-                DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
-                Map<String, Object> add = new HashMap<>();
-                add.put("activation", "true");
-                documentReference.update(add).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                binding.username.setText(userID);
 
-                    }
-                });
 
 
             }
@@ -65,6 +58,7 @@ public class Renew extends AppCompatActivity {
     }
 
     public void renew_button(View view) {
+        System.out.println(userID);
 
         renew_setup();
 
@@ -75,7 +69,9 @@ public class Renew extends AppCompatActivity {
         String today_D = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
         Map<String, Object> edit = new HashMap<>();
-        edit.put("daysnumber",binding.daysNumber.getText().toString().trim());
+        Double days = Double.parseDouble(binding.daysNumber.getText().toString().trim());
+        System.out.println(days);
+        edit.put("daysnumber",days);
         edit.put("date",today_D);
 
 
