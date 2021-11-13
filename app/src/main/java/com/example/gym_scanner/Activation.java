@@ -11,6 +11,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.gym_scanner.databinding.ActivityActivationBinding;
@@ -18,11 +20,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -36,7 +43,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class Activation extends AppCompatActivity {
+public class Activation extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String userID;
     FirebaseFirestore firebaseFirestore;
     String activation;
@@ -47,6 +54,7 @@ public class Activation extends AppCompatActivity {
     FirebaseStorage firebaseStorage;
     Double numberofdays;
     String date;
+    String searchinput;
     int actual_remaining;
 
 
@@ -64,6 +72,23 @@ public class Activation extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        //spinner menue setup
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.spinnerItems, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinner.setOnItemSelectedListener(this);
+
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        searchinput = adapterView.getItemAtPosition(i).toString();
+
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 
@@ -135,6 +160,10 @@ public class Activation extends AppCompatActivity {
     void gettindata() {
         binding.usercard.setVisibility(View.VISIBLE);
         Downloaduserphoto();
+
+        if (userID != null) {
+
+        }
 
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
 
@@ -238,8 +267,37 @@ public class Activation extends AppCompatActivity {
 
     public void search(View view) {
 
-        userID = binding.enterdUserid.getText().toString().trim();
-        gettindata();
+
+        try {
+            if (searchinput.equals("id")) {
+                userID = binding.enterdUserid.getText().toString().trim();
+                gettindata();
+            } else {
+                CollectionReference collectionReference = firebaseFirestore.collection("users");
+
+                collectionReference.whereEqualTo(searchinput, binding.enterdUserid.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                System.out.println(document.getId());
+                                userID = document.getId();
+                                gettindata();
+
+                            }
+                        }
+
+                    }
+                });
+            }
+
+
+        } catch (Exception e) {
+            Toast.makeText(Activation.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+
     }
 
     void Downloaduserphoto() {
@@ -277,14 +335,39 @@ public class Activation extends AppCompatActivity {
 
 
     public void test(View view) {
+        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
 
+                int id = (int) parent.getItemAtPosition(position);
+                System.out.println(id + "check");
+
+
+                switch (id) {
+                    case 0:
+                        System.out.println(0);
+                        break;
+                    case 1:
+                        System.out.println(1);
+                        break;
+                    default:
+                        System.out.println("NO");
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     void renew_setup() {
         String today_D = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
         Map<String, Object> edit = new HashMap<>();
-        Double days = Double.parseDouble(binding.daysNumber.getText().toString().trim())+actual_remaining;
+        Double days = Double.parseDouble(binding.daysNumber.getText().toString().trim()) + actual_remaining;
         System.out.println(days);
         edit.put("daysnumber", days);
         edit.put("date", today_D);
@@ -326,4 +409,10 @@ public class Activation extends AppCompatActivity {
 
 
     }
+
+    void searchbymobile() {
+
+    }
+
+
 }

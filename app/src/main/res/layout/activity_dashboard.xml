@@ -76,9 +76,40 @@
                 android:layout_margin="8dp"
                 android:background="@color/yellow"
                 android:gravity="center"
+
                 android:text="Scan"
                 android:textColor="@color/blue"
                 android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/enterd_userid"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:hint="Enter user id"
+                    android:inputType="textPersonName" />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:entries="@array/spinnerItems" />
+
+                <Button
+                    android:id="@+id/button5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:onClick="Scan"
+                    android:text="Search" />
+            </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/visitor_card"

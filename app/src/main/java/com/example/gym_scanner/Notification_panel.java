@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
@@ -32,11 +33,11 @@ public class Notification_panel extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_panel);
-        firebaseFirestore=FirebaseFirestore.getInstance();
-        announcement=findViewById(R.id.announcemt);
-        current_ann=findViewById(R.id.current_message);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        announcement = findViewById(R.id.announcemt);
+        current_ann = findViewById(R.id.current_message);
         getcurrent_message();
-        ActionBar actionBar=getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Notification Panel");
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
@@ -64,8 +65,8 @@ public class Notification_panel extends AppCompatActivity {
 
     }
 
-    void getcurrent_message(){
-        DocumentReference documentReference =firebaseFirestore.collection("message").document("message");
+    void getcurrent_message() {
+        DocumentReference documentReference = firebaseFirestore.collection("message").document("message");
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -78,16 +79,10 @@ public class Notification_panel extends AppCompatActivity {
 
     public void Delete(View view) {
         DocumentReference documentReference = firebaseFirestore.collection("message").document("message");
-        Map<String, Object> message = new HashMap<>();
-        message.put("message", "");
 
-        documentReference.set(message).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
 
-            }
-        });
-        announcement.setText("");
+        documentReference.update("message", FieldValue.delete());
+
 
     }
 }

@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +30,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -45,7 +48,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class Dashboard extends AppCompatActivity implements View.OnClickListener {
+public class Dashboard extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
 
     String userID;
@@ -67,6 +70,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     String adminname;
     TextView admin;
     String MY_PREFS_NAME = "gym";
+    String searchinput;
 
 
     @Override
@@ -92,6 +96,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         int min = calendar.get(Calendar.MINUTE);
         admin = findViewById(R.id.admin);
         time = hour + ":" + min;
+
         SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         adminname = sharedPreferences.getString("log", null);
         if (adminname != null) {
@@ -100,6 +105,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
 
         firebaseFirestore = FirebaseFirestore.getInstance();
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.spinnerItems, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinner.setOnItemSelectedListener(this);
 
 
         // update_today();
@@ -144,94 +152,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     binding.visitorCard.setVisibility(View.VISIBLE);
                     userID = result.getContents();
                     System.out.println(userID);
-                    firebaseFirestore.collection(today_firebase).document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.getResult().exists()) {
-                                Toast.makeText(Dashboard.this, "This user has already been  scanned today", Toast.LENGTH_LONG).show();
-                                lastuser_name.setText("This user has already been  scanned today");
 
-                            } else {
-                                //Getting the username from the scanned ID
-
-                                try {
-                                    DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
-                                    documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                            lastuser_name.setText(value.getString("fname"));
-                                            username = value.getString("fname") + " " + value.getString("lname");
-                                            String sub = value.getString("date");
-                                            Double daysofsub = value.getDouble("daysnumber");
-                                            binding.remaingDays.setText(daysofsub.toString());
-                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                                            try {
-                                                Date sub_date = simpleDateFormat.parse(sub);
-                                                String today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-                                                Date today_date = simpleDateFormat.parse(today_Date);
-                                                long remaing = Math.abs(today_date.getTime() - sub_date.getTime());
-                                                int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
-                                                System.out.println(daysofsub);
-                                                System.out.println(diffenrence);
-                                                int actual_remaining = (int) (daysofsub - diffenrence);
-                                                Toast.makeText(Dashboard.this, actual_remaining, Toast.LENGTH_LONG).show();
-                                                binding.remaingDays.setText(actual_remaining);
-                                                System.out.println(actual_remaining + "REMAIN");
-
-
-                                                System.out.println(diffenrence);
-                                            } catch (Exception e) {
-                                                binding.remaingDays.setText("Wrong");
-
-                                            }
-
-
-                                            if (value.getString("fname") != null) {
-                                                //Adding users to new DATABASE
-                                                DocumentReference documentReference2 = firebaseFirestore.collection(username).document(today_firebase);
-                                                Map<String, Object> userstoday = new HashMap<>();
-                                                userstoday.put("Admin", adminname);
-                                                documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-
-                                                    }
-                                                });
-
-
-                                                //Adding today users users
-                                                DocumentReference documentReference1 = firebaseFirestore.collection(today_firebase).document(userID);
-                                                Map<String, Object> currentusers = new HashMap<>();
-                                                currentusers.put("name", username);
-                                                currentusers.put("userid", userID);
-                                                currentusers.put("time", time);
-                                                currentusers.put("admin", adminname);
-                                                documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void unused) {
-                                                        lastuser_id.setText(userID);
-
-
-                                                        Downloaduserphoto();
-
-
-                                                    }
-                                                });
-
-                                            } else {
-                                                Toast.makeText(Dashboard.this, "Wrong QR", Toast.LENGTH_LONG).show();
-                                                lastuser_id.setText("Wrong");
-
-
-                                            }
-                                        }
-                                    });
-                                } catch (Exception e) {
-
-                                }
-                            }
-                        }
-                    });
 
 
                 }
@@ -364,6 +285,143 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     public void goto_mangaAccounts(View view) {
         Intent intent = new Intent(Dashboard.this,Activation.class);
         startActivity(intent);
+    }
+
+    public void Scan(View view) {
+        if (searchinput.equals("id")) {
+            userID = binding.enterdUserid.getText().toString().trim();
+            getusername();
+            binding.visitorCard.setVisibility(View.VISIBLE);
+
+        } else {
+            CollectionReference collectionReference = firebaseFirestore.collection("users");
+
+            collectionReference.whereEqualTo(searchinput, binding.enterdUserid.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            System.out.println(document.getId());
+                            userID = document.getId();
+                            getusername();
+                            binding.visitorCard.setVisibility(View.VISIBLE);
+
+
+                        }
+                    }
+
+                }
+            });
+        }
+
+
+    }
+
+
+    //spinner setup
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        searchinput = adapterView.getItemAtPosition(i).toString();
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+    void getusername(){
+        firebaseFirestore.collection(today_firebase).document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.getResult().exists()) {
+                    Toast.makeText(Dashboard.this, "This user has already been  scanned today", Toast.LENGTH_LONG).show();
+                    lastuser_name.setText("This user has already been  scanned today");
+
+                } else {
+                    //Getting the username from the scanned ID
+                    getusername();
+
+                }
+            }
+        });
+
+        try {
+            DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    lastuser_name.setText(value.getString("fname"));
+                    username = value.getString("fname") + " " + value.getString("lname");
+                    String sub = value.getString("date");
+                    Double daysofsub = value.getDouble("daysnumber");
+                    binding.remaingDays.setText(daysofsub.toString());
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    try {
+                        Date sub_date = simpleDateFormat.parse(sub);
+                        String today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                        Date today_date = simpleDateFormat.parse(today_Date);
+                        long remaing = Math.abs(today_date.getTime() - sub_date.getTime());
+                        int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
+                        System.out.println(daysofsub);
+                        System.out.println(diffenrence);
+                        int actual_remaining = (int) (daysofsub - diffenrence);
+                        Toast.makeText(Dashboard.this, actual_remaining, Toast.LENGTH_LONG).show();
+                        binding.remaingDays.setText(actual_remaining);
+                        System.out.println(actual_remaining + "REMAIN");
+
+
+                        System.out.println(diffenrence);
+                    } catch (Exception e) {
+                        binding.remaingDays.setText("Wrong");
+
+                    }
+
+
+                    if (value.getString("fname") != null) {
+                        //Adding users to new DATABASE
+                        DocumentReference documentReference2 = firebaseFirestore.collection(username).document(today_firebase);
+                        Map<String, Object> userstoday = new HashMap<>();
+                        userstoday.put("Admin", adminname);
+                        documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                            }
+                        });
+
+
+                        //Adding today users users
+                        DocumentReference documentReference1 = firebaseFirestore.collection(today_firebase).document(userID);
+                        Map<String, Object> currentusers = new HashMap<>();
+                        currentusers.put("name", username);
+                        currentusers.put("userid", userID);
+                        currentusers.put("time", time);
+                        currentusers.put("admin", adminname);
+                        documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                lastuser_id.setText(userID);
+
+
+                                Downloaduserphoto();
+
+
+                            }
+                        });
+
+                    } else {
+                        Toast.makeText(Dashboard.this, "Wrong QR", Toast.LENGTH_LONG).show();
+                        lastuser_id.setText("Wrong");
+
+
+                    }
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 }
 
