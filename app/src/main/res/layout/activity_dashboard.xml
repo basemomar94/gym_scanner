@@ -88,7 +88,7 @@
 
                 <EditText
                     android:id="@+id/enterd_userid"
-                    android:layout_width="100dp"
+                    android:layout_width="120dp"
                     android:layout_height="40dp"
                     android:layout_margin="8dp"
                     android:hint="Enter user id"
@@ -96,7 +96,7 @@
 
                 <Spinner
                     android:id="@+id/spinner"
-                    android:layout_width="wrap_content"
+                    android:layout_width="90dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:entries="@array/spinnerItems" />
@@ -106,7 +106,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:layout_weight="1"
                     android:onClick="Scan"
                     android:text="Search" />
             </LinearLayout>

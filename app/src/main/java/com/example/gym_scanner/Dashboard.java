@@ -332,96 +332,102 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     }
     void getusername(){
-        firebaseFirestore.collection(today_firebase).document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.getResult().exists()) {
-                    Toast.makeText(Dashboard.this, "This user has already been  scanned today", Toast.LENGTH_LONG).show();
-                    lastuser_name.setText("This user has already been  scanned today");
-
-                } else {
-                    //Getting the username from the scanned ID
-                    getusername();
-
-                }
-            }
-        });
-
-        try {
-            DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
-            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        System.out.println(userID+"null");
+        if (userID!=null){
+            firebaseFirestore.collection(today_firebase).document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
-                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                    lastuser_name.setText(value.getString("fname"));
-                    username = value.getString("fname") + " " + value.getString("lname");
-                    String sub = value.getString("date");
-                    Double daysofsub = value.getDouble("daysnumber");
-                    binding.remaingDays.setText(daysofsub.toString());
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                    try {
-                        Date sub_date = simpleDateFormat.parse(sub);
-                        String today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-                        Date today_date = simpleDateFormat.parse(today_Date);
-                        long remaing = Math.abs(today_date.getTime() - sub_date.getTime());
-                        int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
-                        System.out.println(daysofsub);
-                        System.out.println(diffenrence);
-                        int actual_remaining = (int) (daysofsub - diffenrence);
-                        Toast.makeText(Dashboard.this, actual_remaining, Toast.LENGTH_LONG).show();
-                        binding.remaingDays.setText(actual_remaining);
-                        System.out.println(actual_remaining + "REMAIN");
-
-
-                        System.out.println(diffenrence);
-                    } catch (Exception e) {
-                        binding.remaingDays.setText("Wrong");
-
-                    }
-
-
-                    if (value.getString("fname") != null) {
-                        //Adding users to new DATABASE
-                        DocumentReference documentReference2 = firebaseFirestore.collection(username).document(today_firebase);
-                        Map<String, Object> userstoday = new HashMap<>();
-                        userstoday.put("Admin", adminname);
-                        documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-
-                            }
-                        });
-
-
-                        //Adding today users users
-                        DocumentReference documentReference1 = firebaseFirestore.collection(today_firebase).document(userID);
-                        Map<String, Object> currentusers = new HashMap<>();
-                        currentusers.put("name", username);
-                        currentusers.put("userid", userID);
-                        currentusers.put("time", time);
-                        currentusers.put("admin", adminname);
-                        documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                lastuser_id.setText(userID);
-
-
-                                Downloaduserphoto();
-
-
-                            }
-                        });
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.getResult().exists()) {
+                        Toast.makeText(Dashboard.this, "This user has already been  scanned today", Toast.LENGTH_LONG).show();
+                        lastuser_name.setText("This user has already been  scanned today");
 
                     } else {
-                        Toast.makeText(Dashboard.this, "Wrong QR", Toast.LENGTH_LONG).show();
-                        lastuser_id.setText("Wrong");
+                        //Getting the username from the scanned ID
 
+                        try {
+                            DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+                            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                    lastuser_name.setText(value.getString("fname"));
+                                    username = value.getString("fname") + " " + value.getString("lname");
+                                    String sub = value.getString("date");
+                                    Double daysofsub = value.getDouble("daysnumber");
+                                    binding.remaingDays.setText(daysofsub.toString());
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                                    try {
+                                        Date sub_date = simpleDateFormat.parse(sub);
+                                        String today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                                        Date today_date = simpleDateFormat.parse(today_Date);
+                                        long remaing = Math.abs(today_date.getTime() - sub_date.getTime());
+                                        int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
+                                        System.out.println(daysofsub);
+                                        System.out.println(diffenrence);
+                                        int actual_remaining = (int) (daysofsub - diffenrence);
+                                        Toast.makeText(Dashboard.this, actual_remaining, Toast.LENGTH_LONG).show();
+                                        binding.remaingDays.setText(actual_remaining);
+                                        System.out.println(actual_remaining + "REMAIN");
+
+
+                                        System.out.println(diffenrence);
+                                    } catch (Exception e) {
+                                        binding.remaingDays.setText("Wrong");
+
+                                    }
+
+
+                                    if (value.getString("fname") != null) {
+                                        //Adding users to new DATABASE
+                                        DocumentReference documentReference2 = firebaseFirestore.collection(username).document(today_firebase);
+                                        Map<String, Object> userstoday = new HashMap<>();
+                                        userstoday.put("Admin", adminname);
+                                        documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                            }
+                                        });
+
+
+                                        //Adding today users users
+                                        DocumentReference documentReference1 = firebaseFirestore.collection(today_firebase).document(userID);
+                                        Map<String, Object> currentusers = new HashMap<>();
+                                        currentusers.put("name", username);
+                                        currentusers.put("userid", userID);
+                                        currentusers.put("time", time);
+                                        currentusers.put("admin", adminname);
+                                        documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                lastuser_id.setText(userID);
+
+
+                                                Downloaduserphoto();
+
+
+                                            }
+                                        });
+
+                                    } else {
+                                        Toast.makeText(Dashboard.this, "Wrong QR", Toast.LENGTH_LONG).show();
+                                        lastuser_id.setText("Wrong");
+
+
+                                    }
+                                }
+                            });
+                        } catch (Exception e) {
+
+                        }
 
                     }
                 }
             });
-        } catch (Exception e) {
-
+        } else {
+            Toast.makeText(Dashboard.this,"Please enter ",Toast.LENGTH_LONG).show();
         }
+
+
     }
 }
 
