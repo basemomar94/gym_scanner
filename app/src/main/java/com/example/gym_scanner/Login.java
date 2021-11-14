@@ -3,6 +3,7 @@ package com.example.gym_scanner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +37,10 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_login);
+
         mail=findViewById(R.id.mail);
         password=findViewById(R.id.password);
         progressBar=findViewById(R.id.loading_log);
@@ -101,35 +105,6 @@ public class Login extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
 
         }
-
-
-       /* if (mail.getText().toString().trim()!=null && password.getText().toString().trim()!=null){
-
-
-
-            firebaseAuth.signInWithEmailAndPassword(mail.getText().toString().trim(),password.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()){
-                        Intent intent = new Intent(Login.this,Dashboard.class);
-                        startActivity(intent);
-                        finish();
-                        progressBar.setVisibility(View.INVISIBLE);
-
-                    }
-
-                    else {
-
-                        Toast.makeText(Login.this,"Please check your info",Toast.LENGTH_LONG).show();
-                        progressBar.setVisibility(View.INVISIBLE);
-
-                    }
-
-                }
-            });*/
-
-
-
         }
 
     }

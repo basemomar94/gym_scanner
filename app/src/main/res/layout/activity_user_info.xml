@@ -45,14 +45,15 @@
 
                         <TextView
                             android:id="@+id/name_info2"
-                            android:layout_width="50dp"
+                            android:layout_width="85dp"
                             android:layout_height="wrap_content"
 
                             android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/person"
                             android:onClick="copy"
                             android:text="name : "
                             android:textColor="@color/blue"
-                            android:textSize="12sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -63,8 +64,8 @@
                             android:layout_margin="8dp"
                             android:onClick="copy"
                             android:text="TextView"
-                            android:textColor="@color/blue"
-                            android:textSize="12sp" />
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -74,14 +75,15 @@
 
                         <TextView
                             android:id="@+id/name_info4"
-                            android:layout_width="50dp"
+                            android:layout_width="85dp"
                             android:layout_height="wrap_content"
 
                             android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/id"
                             android:onClick="copy"
                             android:text="user id : "
                             android:textColor="@color/blue"
-                            android:textSize="12sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -93,8 +95,8 @@
 
                             android:onClick="copy"
                             android:text="TextView"
-                            android:textColor="@color/blue"
-                            android:textSize="10sp" />
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -104,14 +106,15 @@
 
                         <TextView
                             android:id="@+id/name_info5"
-                            android:layout_width="50dp"
-                            android:layout_height="match_parent"
+                            android:layout_width="85dp"
+                            android:layout_height="wrap_content"
 
                             android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/mail"
                             android:onClick="copy"
                             android:text="mail : "
                             android:textColor="@color/blue"
-                            android:textSize="12sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -123,8 +126,8 @@
 
                             android:onClick="copy"
                             android:text="TextView"
-                            android:textColor="@color/blue"
-                            android:textSize="12sp" />
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -134,14 +137,15 @@
 
                         <TextView
                             android:id="@+id/name_info6"
-                            android:layout_width="50dp"
-                            android:layout_height="match_parent"
+                            android:layout_width="85dp"
+                            android:layout_height="wrap_content"
 
                             android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/phone"
                             android:onClick="copy"
                             android:text="phone : "
                             android:textColor="@color/blue"
-                            android:textSize="12sp"
+                            android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -153,21 +157,9 @@
 
                             android:onClick="copy"
                             android:text="TextView"
-                            android:textColor="@color/blue"
-                            android:textSize="12sp" />
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/admin_info"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-
-                        android:onClick="copy"
-                        android:text="TextView"
-                        android:textColor="@color/blue"
-                        android:textSize="12sp" />
 
                 </LinearLayout>
             </LinearLayout>

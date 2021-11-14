@@ -113,7 +113,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.spinner.setOnItemSelectedListener(this);
 
 
-        // update_today();
+
         gettodaycount();
 
 
@@ -213,7 +213,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
 
-                  //  today.setText("Today " + task.getResult().size());
+                  today.setText("Today " + task.getResult().size());
 
                 }
             });
@@ -243,45 +243,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     public void test(View view) {
-        DocumentReference documentReference = firebaseFirestore.collection("users").document("FD96yY0UtITduFmnh6zDEy0KvSE3");
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                String subdate = value.getString("date");
-                Double daysofsub = value.getDouble("daysnumber");
+        CollectionReference documentReference =firebaseFirestore.collection("Radwada Sharmota");
 
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                String today_D = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-
-                Date today_date = null;
-                try {
-                    today_date = simpleDateFormat.parse(today_D);
-
-
-                } catch (ParseException e) {
-
-                }
-
-
-                try {
-
-
-                    Date subdate_date = simpleDateFormat.parse(subdate);
-                    long remainig = Math.abs(today_date.getTime() - subdate_date.getTime());
-                    int difference = (int) TimeUnit.DAYS.convert(remainig, TimeUnit.MILLISECONDS);
-                    int actual_remaing = (int) (daysofsub - difference);
-
-                    binding.remaingDays.setText(actual_remaing + "days");
-
-
-
-                } catch (Exception e) {
-
-                }
-
-
-            }
-        });
 
     }
 
@@ -354,30 +317,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                     lastuser_name.setText(value.getString("fname"));
                                     username = value.getString("fname") + " " + value.getString("lname");
-                                   /*  String sub = value.getString("date");
-                                    Double daysofsub = value.getDouble("daysnumber");
-                                    binding.remaingDays.setText(daysofsub.toString());
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                                   try {
-                                        Date sub_date = simpleDateFormat.parse(sub);
-                                        String today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-                                        Date today_date = simpleDateFormat.parse(today_Date);
-                                        long remaing = Math.abs(today_date.getTime() - sub_date.getTime());
-                                        int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
-
-                                        int actual_remaining = (int) (daysofsub - diffenrence);
-                                        Toast.makeText(Dashboard.this, actual_remaining, Toast.LENGTH_LONG).show();
-                                        binding.remaingDays.setText(actual_remaining);
-
-
-
-
-
-                                    } catch (Exception e) {
-                                        binding.remaingDays.setText("Wrong");
-
-                                    }*/
-                                    calculate_remaing();
+                                    date = value.getString("date");
+                                   // calculate_remaing();
 
 
                                     if (value.getString("fname") != null) {
