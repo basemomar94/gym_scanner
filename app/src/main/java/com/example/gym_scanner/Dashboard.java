@@ -71,6 +71,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     TextView admin;
     String MY_PREFS_NAME = "gym";
     String searchinput;
+    Double numberofdays;
+    String date;
+    int actual_remaining;
 
 
     @Override
@@ -129,7 +132,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
         intentIntegrator.setPrompt("Scanning..");
         intentIntegrator.initiateScan();
-        System.out.println("USer is " + userID);
+
 
     }
 
@@ -151,7 +154,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 } else {
                     binding.visitorCard.setVisibility(View.VISIBLE);
                     userID = result.getContents();
-                    System.out.println(userID);
+                    getusername();
+
 
 
 
@@ -245,15 +249,14 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 String subdate = value.getString("date");
                 Double daysofsub = value.getDouble("daysnumber");
-                System.out.println(subdate);
-                System.out.println(daysofsub);
+
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 String today_D = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-                System.out.println(today_D);
+
                 Date today_date = null;
                 try {
                     today_date = simpleDateFormat.parse(today_D);
-                    System.out.println(today_D);
+
 
                 } catch (ParseException e) {
 
@@ -267,13 +270,13 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     long remainig = Math.abs(today_date.getTime() - subdate_date.getTime());
                     int difference = (int) TimeUnit.DAYS.convert(remainig, TimeUnit.MILLISECONDS);
                     int actual_remaing = (int) (daysofsub - difference);
-                    System.out.println(actual_remaing);
+
                     binding.remaingDays.setText(actual_remaing + "days");
-                    System.out.println(actual_remaing + "Salah");
+
 
 
                 } catch (Exception e) {
-                    System.out.println(e);
+
                 }
 
 
@@ -302,7 +305,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            System.out.println(document.getId());
+
                             userID = document.getId();
                             getusername();
                             binding.visitorCard.setVisibility(View.VISIBLE);
@@ -332,7 +335,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     }
     void getusername(){
-        System.out.println(userID+"null");
+        System.out.println(userID);
         if (userID!=null){
             firebaseFirestore.collection(today_firebase).document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -351,29 +354,30 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                     lastuser_name.setText(value.getString("fname"));
                                     username = value.getString("fname") + " " + value.getString("lname");
-                                    String sub = value.getString("date");
+                                   /*  String sub = value.getString("date");
                                     Double daysofsub = value.getDouble("daysnumber");
                                     binding.remaingDays.setText(daysofsub.toString());
                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                                    try {
+                                   try {
                                         Date sub_date = simpleDateFormat.parse(sub);
                                         String today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
                                         Date today_date = simpleDateFormat.parse(today_Date);
                                         long remaing = Math.abs(today_date.getTime() - sub_date.getTime());
                                         int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
-                                        System.out.println(daysofsub);
-                                        System.out.println(diffenrence);
+
                                         int actual_remaining = (int) (daysofsub - diffenrence);
                                         Toast.makeText(Dashboard.this, actual_remaining, Toast.LENGTH_LONG).show();
                                         binding.remaingDays.setText(actual_remaining);
-                                        System.out.println(actual_remaining + "REMAIN");
 
 
-                                        System.out.println(diffenrence);
+
+
+
                                     } catch (Exception e) {
                                         binding.remaingDays.setText("Wrong");
 
-                                    }
+                                    }*/
+                                    calculate_remaing();
 
 
                                     if (value.getString("fname") != null) {
@@ -425,6 +429,29 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             });
         } else {
             Toast.makeText(Dashboard.this,"Please enter ",Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    void calculate_remaing() {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date date_Sub = simpleDateFormat.parse(date);
+            String today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+            Date today_date = simpleDateFormat.parse(today_Date);
+            long remaing = Math.abs(today_date.getTime() - date_Sub.getTime());
+            int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
+            actual_remaining = (int) (numberofdays - diffenrence);
+
+
+            //Toast.makeText(Activation.this,actual_remaining,Toast.LENGTH_LONG).show();
+            binding.remaingDays.setText("remaing days : " + actual_remaining);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
 

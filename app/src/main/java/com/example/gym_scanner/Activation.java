@@ -158,54 +158,67 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
     }
 
     void gettindata() {
-        binding.usercard.setVisibility(View.VISIBLE);
-        Downloaduserphoto();
+        try {
+            binding.usercard.setVisibility(View.VISIBLE);
+            Downloaduserphoto();
+            if (userID != null) {
+            }
+            DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    String activation = value.getString("activation");
+                    System.out.println(activation);
+                    try {
+                        if (activation.equals("true")) {
+                            status = true;
 
-        if (userID != null) {
+                            binding.status.setText("This account is active");
+                            binding.status.setTextColor(Color.GREEN);
+                            binding.activateButton.setText("Deactivate");
 
+                        } else {
+                            status = false;
+                            binding.status.setTextColor(Color.RED);
+                            binding.status.setText("This account is inactive");
+                        }
+                    } catch (Exception e){
+
+                    }
+                    try {
+                        binding.userid.setText("User ID : " + userID);
+                        binding.fnameRight.setText("first name : " + value.getString("fname"));
+                        binding.fnameEdit.setText(value.getString("fname"));
+
+                        binding.lnameRight.setText("last name : " + value.getString("lname"));
+                        binding.lnameEdit.setText(value.getString("lname"));
+
+                        binding.phoneRight.setText("phone : " + value.getString("phone"));
+                        binding.phoneEdit.setText(value.getString("phone"));
+
+                        binding.subscribtionDateRight.setText("Subscribtion date : " + value.getString("date"));
+                        binding.subscribtionEdit.setText(value.getString("date"));
+                        date = value.getString("date");
+
+                        binding.daysRight.setText("number of days : " + value.getDouble("daysnumber").toString());
+                        binding.daysEdit.setText(value.getDouble("daysnumber").toString());
+                        numberofdays = value.getDouble("daysnumber");
+                        calculate_remaing();
+                    } catch (Exception e){
+                        binding.usercard.setVisibility(View.INVISIBLE);
+
+                    }
+
+
+
+
+                }
+            });
+        } catch (Exception e){
+
+            binding.usercard.setVisibility(View.INVISIBLE);
         }
 
-        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
-
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                String activation = value.getString("activation");
-                System.out.println(activation);
-                if (activation.equals("true")) {
-                    status = true;
-
-                    binding.status.setText("This account is active");
-                    binding.status.setTextColor(Color.GREEN);
-                    binding.activateButton.setText("Deactivate");
-
-                } else {
-                    status = false;
-                    binding.status.setTextColor(Color.RED);
-                    binding.status.setText("This account is inactive");
-                }
-                binding.userid.setText("User ID : " + userID);
-                binding.fnameRight.setText("first name : " + value.getString("fname"));
-                binding.fnameEdit.setText(value.getString("fname"));
-
-                binding.lnameRight.setText("last name : " + value.getString("lname"));
-                binding.lnameEdit.setText(value.getString("lname"));
-
-                binding.phoneRight.setText("phone : " + value.getString("phone"));
-                binding.phoneEdit.setText(value.getString("phone"));
-
-                binding.subscribtionDateRight.setText("Subscribtion date : " + value.getString("date"));
-                binding.subscribtionEdit.setText(value.getString("date"));
-                date = value.getString("date");
-
-                binding.daysRight.setText("number of days : " + value.getDouble("daysnumber").toString());
-                binding.daysEdit.setText(value.getDouble("daysnumber").toString());
-                numberofdays = value.getDouble("daysnumber");
-                calculate_remaing();
-
-
-            }
-        });
 
     }
 
@@ -301,10 +314,6 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
     }
 
     void Downloaduserphoto() {
-        System.out.println(userID);
-
-
-        Toast.makeText(Activation.this, userID, Toast.LENGTH_LONG).show();
         try {
             // Create a reference with an initial file path and name
             StorageReference profile = storageReference.child("image/profile/" + userID);
