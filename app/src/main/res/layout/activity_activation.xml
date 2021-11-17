@@ -26,7 +26,7 @@
         <EditText
             android:id="@+id/enterd_userid"
             android:layout_width="100dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:layout_margin="8dp"
             android:hint="Enter user id"
             android:inputType="textPersonName" />
@@ -34,15 +34,14 @@
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_margin="8dp"
-            android:entries="@array/spinnerItems"
-           />
+            android:entries="@array/spinnerItems" />
 
         <Button
             android:id="@+id/button5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:onClick="search"

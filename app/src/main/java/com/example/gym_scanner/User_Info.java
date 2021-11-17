@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +22,6 @@ import com.example.gym_scanner.databinding.ActivityUserInfoBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -33,8 +31,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import org.w3c.dom.Text;
 
 public class User_Info extends AppCompatActivity {
 
@@ -66,7 +62,7 @@ public class User_Info extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
 
         storageReference = firebaseStorage.getReference();
-        username=findViewById(R.id.name_info);
+        username=findViewById(R.id.birth_info);
         id=findViewById(R.id.id_info);
         phone=findViewById(R.id.phone_info);
         mail=findViewById(R.id.mail_info);
@@ -165,7 +161,7 @@ public class User_Info extends AppCompatActivity {
 
 
         switch (view.getId()){
-            case R.id.name_info:copytoClip(binding.nameInfo);
+            case R.id.birth_info:copytoClip(binding.nameInfo);
             break;
             case R.id.id_info:copytoClip(binding.idInfo);
             break;
@@ -175,5 +171,12 @@ public class User_Info extends AppCompatActivity {
             break;
 
         }
+    }
+
+    public void manage(View view) {
+        Intent intent = new Intent(User_Info.this,Activation.class);
+        intent.putExtra("user",userid);
+        startActivity(intent);
+
     }
 }

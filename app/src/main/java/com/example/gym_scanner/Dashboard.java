@@ -397,6 +397,12 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
 
     }
+
+    public void user_info(View view) {
+        Intent intent = new Intent(Dashboard.this,User_Info.class);
+        intent.putExtra("user",userID);
+        startActivity(intent);
+    }
 }
 
 

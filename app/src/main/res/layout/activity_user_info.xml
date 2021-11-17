@@ -9,6 +9,8 @@
     android:orientation="vertical"
     tools:context=".User_Info">
 
+
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,7 +47,7 @@
 
                         <TextView
                             android:id="@+id/name_info2"
-                            android:layout_width="85dp"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
 
                             android:layout_margin="8dp"
@@ -57,7 +59,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/name_info"
+                            android:id="@+id/birth_info"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
@@ -75,7 +77,7 @@
 
                         <TextView
                             android:id="@+id/name_info4"
-                            android:layout_width="85dp"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
 
                             android:layout_margin="8dp"
@@ -96,7 +98,7 @@
                             android:onClick="copy"
                             android:text="TextView"
                             android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -106,7 +108,7 @@
 
                         <TextView
                             android:id="@+id/name_info5"
-                            android:layout_width="85dp"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
 
                             android:layout_margin="8dp"
@@ -137,7 +139,7 @@
 
                         <TextView
                             android:id="@+id/name_info6"
-                            android:layout_width="85dp"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
 
                             android:layout_margin="8dp"
@@ -161,7 +163,51 @@
                             android:textSize="16sp" />
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/name_info"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+
+                            android:layout_margin="8dp"
+                            android:drawableLeft="@drawable/calendar"
+                            android:onClick="copy"
+                            android:text="birth date : "
+                            android:textColor="@color/blue"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/date_info2"
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+
+                            android:onClick="copy"
+                            android:text="TextView"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/button10"
+                        android:layout_width="fill_parent"
+
+
+                        android:layout_height="60dp"
+                        android:insetBottom="0dp"
+                        android:onClick="manage"
+                        android:padding="0dp"
+                        android:text="Manage Account"
+                        android:textStyle="bold"
+                        app:rippleColor="@color/blue" />
                 </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
 
@@ -170,6 +216,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/date_recycle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

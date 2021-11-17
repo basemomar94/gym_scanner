@@ -76,6 +76,7 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.spinnerItems, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinner.setOnItemSelectedListener(this);
+        directdata();
 
 
     }
@@ -421,6 +422,15 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
 
     void searchbymobile() {
 
+    }
+    void directdata(){
+        String intent_id = getIntent().getStringExtra("user");
+
+        if (intent_id!=null){
+            userID=intent_id;
+            gettindata();
+            Downloaduserphoto();
+        }
     }
 
 

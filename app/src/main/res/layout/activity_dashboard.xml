@@ -44,6 +44,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:onClick="goToUsers"
                     android:orientation="vertical">
 
                     <TextView
@@ -82,12 +83,10 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:minHeight="60dp
-"
-                android:weightSum="100"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="100">
 
                 <EditText
                     android:id="@+id/enterd_userid"
@@ -122,6 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:onClick="user_info"
                 android:visibility="gone"
                 app:cardCornerRadius="5dp">
 
@@ -217,7 +217,8 @@
                 android:onClick="goToUsers"
                 android:text="Users today"
                 android:textColor="@color/blue"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/gotonoti"
