@@ -323,7 +323,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
                                     if (value.getString("fname") != null) {
                                         //Adding users to new DATABASE
-                                        DocumentReference documentReference2 = firebaseFirestore.collection(username).document(today_firebase);
+                                        DocumentReference documentReference2 = firebaseFirestore.collection(value.getString("mail")).document(today_firebase);
                                         Map<String, Object> userstoday = new HashMap<>();
                                         userstoday.put("Admin", adminname);
                                         documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -348,6 +348,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
 
                                                 Downloaduserphoto();
+                                                gettodaycount();
 
 
                                             }
