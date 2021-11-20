@@ -191,7 +191,7 @@ public class User_Info extends AppCompatActivity {
 
     void datesRecycle() {
 
-        Date_list.add(new date_item("2/2/2020","Bassem","5:23"));
+
 
 
         Date_Adpater date_adpater = new Date_Adpater(Date_list);
@@ -203,7 +203,8 @@ public class User_Info extends AppCompatActivity {
     }
     void getdates (){
         System.out.println(mail_user+"mail");
-        firebaseFirestore.collection(mail_user).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        firebaseFirestore.collection(mail_user).orderBy("stamp", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){

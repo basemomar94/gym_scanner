@@ -81,7 +81,7 @@ public class users_today extends AppCompatActivity {
 
     private void setupRecycle() {
         collectionReference = firebaseFirestore.collection(today_firebase);
-        Query query = collectionReference.orderBy("name", Query.Direction.ASCENDING);
+        Query query = collectionReference.orderBy("name", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>().setQuery(query, User.class).build();
         firebaseAdapter = new Firebase_Adapter_users(options);
         RecyclerView recyclerView = findViewById(R.id.users_recycle);

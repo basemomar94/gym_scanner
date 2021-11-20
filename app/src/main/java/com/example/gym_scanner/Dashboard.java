@@ -28,6 +28,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -330,6 +331,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                         Map<String, Object> userstoday = new HashMap<>();
                                         userstoday.put("Admin", adminname);
                                         userstoday.put("time",time);
+                                        userstoday.put("stamp", FieldValue.serverTimestamp());
                                         documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
@@ -345,6 +347,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                         currentusers.put("userid", userID);
                                         currentusers.put("time", time);
                                         currentusers.put("admin", adminname);
+                                        currentusers.put("stamp",FieldValue.serverTimestamp());
                                         documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {

@@ -289,7 +289,7 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
             } else {
                 CollectionReference collectionReference = firebaseFirestore.collection("users");
 
-                collectionReference.whereEqualTo(searchinput, binding.enterdUserid.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                collectionReference.whereEqualTo(searchinput, binding.enterdUserid.getText().toString().trim()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
