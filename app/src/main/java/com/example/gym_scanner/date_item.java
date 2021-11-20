@@ -3,6 +3,7 @@ package com.example.gym_scanner;
 public class date_item {
     String date;
     String admin;
+    String time;
 
     public String getDate() {
         return date;
@@ -20,8 +21,17 @@ public class date_item {
         this.admin = admin;
     }
 
-    public date_item(String date, String admin) {
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public date_item(String date, String admin, String time) {
         this.date = date;
         this.admin = admin;
+        this.time = time;
     }
 }

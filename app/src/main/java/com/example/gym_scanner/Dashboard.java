@@ -322,10 +322,14 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
 
                                     if (value.getString("fname") != null) {
+
+
                                         //Adding users to new DATABASE
+
                                         DocumentReference documentReference2 = firebaseFirestore.collection(value.getString("mail")).document(today_firebase);
                                         Map<String, Object> userstoday = new HashMap<>();
                                         userstoday.put("Admin", adminname);
+                                        userstoday.put("time",time);
                                         documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
