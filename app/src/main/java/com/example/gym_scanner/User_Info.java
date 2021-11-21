@@ -80,7 +80,6 @@ public class User_Info extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycle_dates);
 
 
-
     }
 
     @Override
@@ -175,10 +174,9 @@ public class User_Info extends AppCompatActivity {
                     phone.setText(value.getString("phone"));
                     mail.setText(value.getString("mail"));
                     mail_user = value.getString("mail");
-                    if (mail_user!=null){
+                    if (mail_user != null) {
                         getdates();
                     }
-
 
 
                 }
@@ -192,8 +190,6 @@ public class User_Info extends AppCompatActivity {
     void datesRecycle() {
 
 
-
-
         Date_Adpater date_adpater = new Date_Adpater(Date_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -201,15 +197,26 @@ public class User_Info extends AppCompatActivity {
 
 
     }
-    void getdates (){
-        System.out.println(mail_user+"mail");
+
+    void getdates() {
+        System.out.println(mail_user + "mail");
 
         firebaseFirestore.collection(mail_user).orderBy("stamp", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
-                 Date_list.add(new date_item(queryDocumentSnapshot.getId(),"Admin","time"));
-                    datesRecycle();
+                for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                    DocumentReference documentReference = firebaseFirestore.collection(mail_user).document(queryDocumentSnapshot.getId());
+                    documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                            String admin_user = value.getString("Admin");
+                            String time = value.getString("time");
+                            Date_list.add(new date_item(queryDocumentSnapshot.getId(), admin_user, time));
+                            datesRecycle();
+
+
+                        }
+                    });
 
 
                 }
