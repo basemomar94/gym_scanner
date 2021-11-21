@@ -52,6 +52,8 @@ public class User_Info extends AppCompatActivity {
     ActivityUserInfoBinding binding;
     String mail_user;
     RecyclerView recyclerView;
+    String token;
+    String name_noti;
 
     private ArrayList<date_item> Date_list;
 
@@ -170,10 +172,12 @@ public class User_Info extends AppCompatActivity {
                     pagetitle = (value.getString("fname") + " " + value.getString("lname"));
 
                     username.setText(value.getString("fname") + " " + value.getString("lname"));
+                    name_noti=value.getString("fname") + " " + value.getString("lname");
                     id.setText(userid);
                     phone.setText(value.getString("phone"));
                     mail.setText(value.getString("mail"));
                     mail_user = value.getString("mail");
+                    token=value.getString("token");
                     if (mail_user != null) {
                         getdates();
                     }
@@ -224,6 +228,15 @@ public class User_Info extends AppCompatActivity {
             }
 
         });
+
+    }
+
+    public void goto_notifications(View view) {
+        System.out.println(token);
+        Intent intent = new Intent(User_Info.this,Notification_panel.class);
+        intent.putExtra("token",token);
+        intent.putExtra("user",name_noti);
+        startActivity(intent);
 
     }
 }

@@ -206,6 +206,19 @@
                         android:text="Manage Account"
                         android:textStyle="bold"
                         app:rippleColor="@color/blue" />
+
+                    <Button
+                        android:id="@+id/button8"
+                        android:layout_width="match_parent"
+
+
+                        android:layout_height="60dp"
+                        android:insetBottom="0dp"
+                        android:onClick="goto_notifications"
+                        android:padding="0dp"
+                        android:text="Send a notification"
+                        android:textStyle="bold"
+                        app:rippleColor="@color/blue" />
                 </LinearLayout>
 
             </LinearLayout>

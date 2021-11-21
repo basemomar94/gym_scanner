@@ -255,6 +255,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     public void Scan(View view) {
+    try {
         if (searchinput.equals("id")) {
             userID = binding.enterdUserid.getText().toString().trim();
             getusername();
@@ -281,6 +282,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 }
             });
         }
+    } catch (Exception e){
+        Toast.makeText(Dashboard.this,e.getMessage(),Toast.LENGTH_LONG).show();
+    }
 
 
     }

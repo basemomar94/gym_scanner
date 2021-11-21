@@ -85,6 +85,34 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/custom_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/texww"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Direct notification to"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/customNoti"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textColor="@color/blue"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -110,6 +138,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="8dp"
+                        android:background="@color/yellow"
                         android:onClick="add_photo"
                         android:text="Attach photo"
                         android:textSize="10sp" />
@@ -136,11 +165,19 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:background="@color/yellow"
                 android:insetBottom="0dp"
                 android:onClick="send_noti"
                 android:text="Send"
                 android:textColor="@color/blue"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="test"
+                android:text="Button" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
