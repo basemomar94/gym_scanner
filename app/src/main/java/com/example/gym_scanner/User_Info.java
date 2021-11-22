@@ -101,7 +101,7 @@ public class User_Info extends AppCompatActivity {
 
     void Downloaduserphoto() {
 
-        Toast.makeText(User_Info.this, userid, Toast.LENGTH_LONG).show();
+      //  Toast.makeText(User_Info.this, userid, Toast.LENGTH_LONG).show();
 
         // Create a reference with an initial file path and name
         StorageReference profile = storageReference.child("image/profile/" + userid);
@@ -157,7 +157,7 @@ public class User_Info extends AppCompatActivity {
     }
 
     public void manage(View view) {
-        Intent intent = new Intent(User_Info.this, Activation.class);
+        Intent intent = new Intent(User_Info.this, Managment.class);
         intent.putExtra("user", userid);
         startActivity(intent);
 
@@ -177,6 +177,7 @@ public class User_Info extends AppCompatActivity {
                     phone.setText(value.getString("phone"));
                     mail.setText(value.getString("mail"));
                     mail_user = value.getString("mail");
+                    binding.dateInfo.setText(value.getString("age"));
                     token=value.getString("token");
                     if (mail_user != null) {
                         getdates();

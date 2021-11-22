@@ -15,7 +15,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.example.gym_scanner.databinding.ActivityActivationBinding;
+import com.example.gym_scanner.databinding.ActivityManagmentBinding;
+import com.example.gym_scanner.databinding.ActivityManagmentBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -43,11 +45,11 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class Activation extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Managment extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String userID;
     FirebaseFirestore firebaseFirestore;
-    String activation;
-    ActivityActivationBinding binding;
+
+    ActivityManagmentBinding binding;
     boolean Editing;
     boolean status;
     StorageReference storageReference;
@@ -56,6 +58,8 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
     String date;
     String searchinput;
     int actual_remaining;
+    String today_Date;
+    Boolean activation;
 
 
     @Override
@@ -63,7 +67,7 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
         Editing = false;
 
         super.onCreate(savedInstanceState);
-        binding = ActivityActivationBinding.inflate(getLayoutInflater());
+        binding = ActivityManagmentBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -168,20 +172,21 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
             documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                    String activation = value.getString("activation");
+                    activation = value.getBoolean("activation");
                     System.out.println(activation);
                     try {
-                        if (activation.equals("true")) {
-                            status = true;
+                        if (activation==true) {
+
 
                             binding.status.setText("This account is active");
                             binding.status.setTextColor(Color.GREEN);
                             binding.activateButton.setText("Deactivate");
 
                         } else {
-                            status = false;
+
                             binding.status.setTextColor(Color.RED);
                             binding.status.setText("This account is inactive");
+                            binding.activateButton.setText("Activate");
                         }
                     } catch (Exception e){
 
@@ -227,10 +232,14 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
 
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
         Map<String, Object> add = new HashMap<>();
-        if (!status) {
-            add.put("activation", "true");
+        if (!activation) {
+
+            add.put("activation", true);
+            add.put("date",today_Date);
+            add.put("stamp", FieldValue.serverTimestamp());
+
         } else {
-            add.put("activation", "False");
+            add.put("activation", false);
         }
 
         documentReference.update(add).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -261,18 +270,19 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
             documentReference.update(update).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    Toast.makeText(Activation.this, "Updates were saved", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Managment.this, "Updates were saved", Toast.LENGTH_LONG).show();
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(Activation.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Managment.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
+
 
                 }
             });
         } catch (Exception e) {
-            Toast.makeText(Activation.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(Managment.this, e.getMessage().toString(), Toast.LENGTH_LONG).show();
             System.out.println(e);
 
         }
@@ -308,7 +318,7 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
 
 
         } catch (Exception e) {
-            Toast.makeText(Activation.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(Managment.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
 
@@ -333,13 +343,13 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
                 @Override
                 public void onFailure(@NonNull Exception e) {
 
-                    Toast.makeText(Activation.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Managment.this, e.getMessage(), Toast.LENGTH_LONG).show();
 
                 }
             });
 
         } catch (Exception e) {
-            Toast.makeText(Activation.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(Managment.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -386,7 +396,7 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
         documentReference.update(edit).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(Activation.this, "Succecedd", Toast.LENGTH_LONG).show();
+                Toast.makeText(Managment.this, "Succecedd", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -402,7 +412,7 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         try {
             Date date_Sub = simpleDateFormat.parse(date);
-            String today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+            today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
             Date today_date = simpleDateFormat.parse(today_Date);
             long remaing = Math.abs(today_date.getTime() - date_Sub.getTime());
             int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
@@ -434,4 +444,9 @@ public class Activation extends AppCompatActivity implements AdapterView.OnItemS
     }
 
 
+    public void go_to_info(View view) {
+        Intent intent = new Intent(Managment.this,User_Info.class);
+        intent.putExtra("user",userID);
+        startActivity(intent);
+    }
 }

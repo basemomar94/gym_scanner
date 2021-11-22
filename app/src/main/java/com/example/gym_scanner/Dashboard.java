@@ -65,6 +65,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     StorageReference storageReference;
     ImageView profile_pic;
     String today_firebase;
+    String yesterday;
     String time;
     FirebaseAuth firebaseAuth;
     private ActivityDashboardBinding binding;
@@ -75,6 +76,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     Double numberofdays;
     String date;
     int actual_remaining;
+    Boolean active;
 
 
     @Override
@@ -93,9 +95,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         profile_pic = findViewById(R.id.profile_pic);
         Calendar calendar = Calendar.getInstance();
         int dayofmonth = calendar.get(Calendar.DAY_OF_MONTH);
+        int day_before = calendar.get(Calendar.DAY_OF_MONTH)-1;
         int month = calendar.get(Calendar.MONTH) + 1;
         int year = calendar.get(Calendar.YEAR);
         today_firebase = dayofmonth + "-" + month + "-" + year;
+        yesterday=day_before+"-"+month+"-"+year;
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
         admin = findViewById(R.id.admin);
@@ -214,15 +218,31 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
 
-                  today.setText("Today " + task.getResult().size());
+                  today.setText("" + task.getResult().size());
+                  Yesterday_count();
 
                 }
             });
+
         } catch (Exception e){
             today.setText("Today " + e.getMessage());
         }
 
     }
+    void Yesterday_count (){
+        try {
+
+            firebaseFirestore.collection(yesterday).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    binding.yesterday.setText(""+task.getResult().size());
+                    System.out.println(task.getResult().size());
+
+                }
+            });
+        } catch (Exception e){}
+    }
+
 
     @Override
     protected void onResume() {
@@ -250,7 +270,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     public void goto_mangaAccounts(View view) {
-        Intent intent = new Intent(Dashboard.this,Activation.class);
+        Intent intent = new Intent(Dashboard.this,Managment.class);
         startActivity(intent);
     }
 
@@ -309,7 +329,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.getResult().exists()) {
-                        Toast.makeText(Dashboard.this, "This user has already been  scanned today", Toast.LENGTH_LONG).show();
+                  //      Toast.makeText(Dashboard.this, "This user has already been  scanned today", Toast.LENGTH_LONG).show();
                         lastuser_name.setText("This user has already been  scanned today");
 
                     } else {
@@ -323,54 +343,64 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                     lastuser_name.setText(value.getString("fname"));
                                     username = value.getString("fname") + " " + value.getString("lname");
                                     date = value.getString("date");
-                                   // calculate_remaing();
-
-
-                                    if (value.getString("fname") != null) {
-
-
-                                        //Adding users to new DATABASE
-
-                                        DocumentReference documentReference2 = firebaseFirestore.collection(value.getString("mail")).document(today_firebase);
-                                        Map<String, Object> userstoday = new HashMap<>();
-                                        userstoday.put("Admin", adminname);
-                                        userstoday.put("time",time);
-                                        userstoday.put("stamp", FieldValue.serverTimestamp());
-                                        documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-
-                                            }
-                                        });
-
-
-                                        //Adding today users users
-                                        DocumentReference documentReference1 = firebaseFirestore.collection(today_firebase).document(userID);
-                                        Map<String, Object> currentusers = new HashMap<>();
-                                        currentusers.put("name", username);
-                                        currentusers.put("userid", userID);
-                                        currentusers.put("time", time);
-                                        currentusers.put("admin", adminname);
-                                        currentusers.put("stamp",FieldValue.serverTimestamp());
-                                        documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                lastuser_id.setText(userID);
-
-
-                                                Downloaduserphoto();
-                                                gettodaycount();
-
-
-                                            }
-                                        });
-
+                                    active=value.getBoolean("activation");
+                                    System.out.println(active);
+                                    if (active==false){
+                                        System.out.println(active);
+                                        lastuser_name.setText("please activate the user first");
                                     } else {
-                                        Toast.makeText(Dashboard.this, "Wrong QR", Toast.LENGTH_LONG).show();
-                                        lastuser_id.setText("Wrong");
+                                        // calculate_remaing();
 
 
+                                        if (value.getString("fname") != null  && active==true) {
+
+
+                                            //Adding users to new DATABASE
+
+                                            DocumentReference documentReference2 = firebaseFirestore.collection(value.getString("mail")).document(today_firebase);
+                                            Map<String, Object> userstoday = new HashMap<>();
+                                            userstoday.put("Admin", adminname);
+                                            userstoday.put("time",time);
+                                            userstoday.put("stamp", FieldValue.serverTimestamp());
+                                            documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                }
+                                            });
+
+
+                                            //Adding today users users
+                                            DocumentReference documentReference1 = firebaseFirestore.collection(today_firebase).document(userID);
+                                            Map<String, Object> currentusers = new HashMap<>();
+                                            currentusers.put("name", username);
+                                            currentusers.put("userid", userID);
+                                            currentusers.put("time", time);
+                                            currentusers.put("admin", adminname);
+                                            currentusers.put("stamp",FieldValue.serverTimestamp());
+                                            documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    lastuser_id.setText(userID);
+
+
+                                                    Downloaduserphoto();
+                                                    gettodaycount();
+
+
+                                                }
+                                            });
+
+                                        } else {
+                                            Toast.makeText(Dashboard.this, "Wrong QR", Toast.LENGTH_LONG).show();
+                                            lastuser_id.setText("please check the entered information");
+
+
+                                        }
                                     }
+
+
+
                                 }
                             });
                         } catch (Exception e) {

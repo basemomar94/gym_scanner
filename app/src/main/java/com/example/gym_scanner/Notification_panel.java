@@ -154,7 +154,7 @@ public class Notification_panel extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                Push_noti();
 
-                Toast.makeText(Notification_panel.this, "notification is sent", Toast.LENGTH_LONG).show();
+             //   Toast.makeText(Notification_panel.this, "notification is sent", Toast.LENGTH_LONG).show();
                 binding.bodyNoti.setText("");
                 binding.titleNoti.setText("");
 
@@ -206,7 +206,7 @@ public class Notification_panel extends AppCompatActivity {
             notification.putFile(imageView).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(Notification_panel.this, "image is uploaded", Toast.LENGTH_LONG);
+              //      Toast.makeText(Notification_panel.this, "image is uploaded", Toast.LENGTH_LONG);
                     binding.photo.setVisibility(View.GONE);
                     binding.addPhoto.setVisibility(View.VISIBLE);
 

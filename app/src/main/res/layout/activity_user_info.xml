@@ -181,7 +181,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/date_info2"
+                            android:id="@+id/date_info"
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="8dp"
     android:orientation="vertical"
-    tools:context=".Activation">
+    tools:context=".Managment">
 
     <Button
         android:id="@+id/button3"
@@ -410,6 +410,17 @@
                             android:text="Renew" />
 
                     </LinearLayout>
+
+                    <Button
+                        android:id="@+id/activate_button2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:background="@color/green"
+                        android:onClick="go_to_info"
+                        android:text="User history"
+                        android:textColor="@color/blue"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
