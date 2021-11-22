@@ -175,7 +175,7 @@ public class Managment extends AppCompatActivity implements AdapterView.OnItemSe
                     activation = value.getBoolean("activation");
                     System.out.println(activation);
                     try {
-                        if (activation==true) {
+                        if (activation == true) {
 
 
                             binding.status.setText("This account is active");
@@ -188,7 +188,7 @@ public class Managment extends AppCompatActivity implements AdapterView.OnItemSe
                             binding.status.setText("This account is inactive");
                             binding.activateButton.setText("Activate");
                         }
-                    } catch (Exception e){
+                    } catch (Exception e) {
 
                     }
                     try {
@@ -210,17 +210,15 @@ public class Managment extends AppCompatActivity implements AdapterView.OnItemSe
                         binding.daysEdit.setText(value.getDouble("daysnumber").toString());
                         numberofdays = value.getDouble("daysnumber");
                         calculate_remaing();
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         binding.usercard.setVisibility(View.INVISIBLE);
 
                     }
 
 
-
-
                 }
             });
-        } catch (Exception e){
+        } catch (Exception e) {
 
             binding.usercard.setVisibility(View.INVISIBLE);
         }
@@ -235,7 +233,7 @@ public class Managment extends AppCompatActivity implements AdapterView.OnItemSe
         if (!activation) {
 
             add.put("activation", true);
-            add.put("date",today_Date);
+            add.put("date", today_Date);
             add.put("stamp", FieldValue.serverTimestamp());
 
         } else {
@@ -433,11 +431,12 @@ public class Managment extends AppCompatActivity implements AdapterView.OnItemSe
     void searchbymobile() {
 
     }
-    void directdata(){
+
+    void directdata() {
         String intent_id = getIntent().getStringExtra("user");
 
-        if (intent_id!=null){
-            userID=intent_id;
+        if (intent_id != null) {
+            userID = intent_id;
             gettindata();
             Downloaduserphoto();
         }
@@ -445,8 +444,8 @@ public class Managment extends AppCompatActivity implements AdapterView.OnItemSe
 
 
     public void go_to_info(View view) {
-        Intent intent = new Intent(Managment.this,User_Info.class);
-        intent.putExtra("user",userID);
+        Intent intent = new Intent(Managment.this, User_Info.class);
+        intent.putExtra("user", userID);
         startActivity(intent);
     }
 }
