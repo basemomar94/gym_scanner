@@ -167,24 +167,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:onClick="user_info"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:cardCornerRadius="5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textView60"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:gravity="center"
-                        android:text="Info of last visitor"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -195,6 +185,7 @@
                             android:id="@+id/profile_pic"
                             android:layout_width="112dp"
                             android:layout_height="68dp"
+                            android:layout_margin="8dp"
                             android:layout_weight="1" />
 
                         <LinearLayout
@@ -214,8 +205,7 @@
                                 android:id="@+id/lastuser_id"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="1dp"
-                                android:layout_marginLeft="3dp"
+                                android:layout_margin="8dp"
                                 android:textColor="@color/blue"
                                 android:textSize="16sp" />
 
@@ -223,10 +213,9 @@
                                 android:id="@+id/remain"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="1dp"
-                                android:layout_marginLeft="3dp"
+                                android:layout_margin="8dp"
                                 android:textColor="@color/green"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:visibility="visible" />
 
                         </LinearLayout>
@@ -274,6 +263,19 @@
                 android:gravity="center"
                 android:onClick="goto_mangaAccounts"
                 android:text="Manage Accounts"
+                android:textColor="@color/blue"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/gotoActivation2"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:background="@color/yellow"
+                android:gravity="center"
+                android:onClick="GotoUsers"
+                android:text="All users"
                 android:textColor="@color/blue"
                 android:textStyle="bold" />
 

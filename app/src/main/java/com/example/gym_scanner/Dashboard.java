@@ -333,6 +333,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     void getusername() {
+     //   binding.visitorCard.setVisibility(View.VISIBLE);
         calculat_remaing();
         System.out.println(userID);
         if (userID != null) {
@@ -340,13 +341,16 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.getResult().exists()) {
-                        //      Toast.makeText(Dashboard.this, "This user has already been  scanned today", Toast.LENGTH_LONG).show();
-                        lastuser_name.setText("This user has already been  scanned today");
+
+
+                        Downloaduserphoto();
+                        binding.remain.setText("This user has already been  scanned today");
 
                     }
                     else if (actual_remaining<0){
                         binding.remain.setTextColor(Color.RED);
                         binding.remain.setText("This user have to renew his subscription");
+                        Downloaduserphoto();
                     }
                     else {
                         //Getting the username from the scanned ID
@@ -441,6 +445,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 String firebase_date = value.getString("date");
                 Double firebase_days = value.getDouble("daysnumber");
+                String first_name = value.getString("fname");
+                String last_name=value.getString("lname");
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
                 try {
                     Date date_Sub = simpleDateFormat.parse(firebase_date);
@@ -450,6 +456,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
                     actual_remaining = (int) (firebase_days - diffenrence);
                     binding.remain.setText(Integer.toString(actual_remaining) + " days left");
+                    binding.lastuserName.setText(first_name + ""+last_name);
 
 
                     System.out.println(actual_remaining);
@@ -475,6 +482,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     public void user_info(View view) {
         Intent intent = new Intent(Dashboard.this, User_Info.class);
         intent.putExtra("user", userID);
+        startActivity(intent);
+    }
+
+    public void GotoUsers(View view) {
+        Intent intent = new Intent(Dashboard.this,All_users.class);
         startActivity(intent);
     }
 }

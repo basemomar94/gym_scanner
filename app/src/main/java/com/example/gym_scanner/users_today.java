@@ -114,7 +114,7 @@ public class users_today extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        firebaseAdapter.startListening();
+        firebaseAdapter.stopListening();
     }
 
     public void search(View view) {

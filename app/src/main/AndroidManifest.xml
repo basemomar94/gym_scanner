@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gym_scanner">
         <activity
+            android:name=".All_users"
+            android:exported="false" />
+        <activity
             android:name=".Managment"
             android:exported="false"
             android:parentActivityName=".Dashboard" />

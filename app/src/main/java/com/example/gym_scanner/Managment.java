@@ -382,10 +382,15 @@ public class Managment extends AppCompatActivity implements AdapterView.OnItemSe
     }
 
     void renew_setup() {
+        Double days;
+
         String today_D = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
         Map<String, Object> edit = new HashMap<>();
-        Double days = Double.parseDouble(binding.daysNumber.getText().toString().trim()) + actual_remaining;
+        if (actual_remaining>0){
+             days = Double.parseDouble(binding.daysNumber.getText().toString().trim()) + actual_remaining;
+        } else days=Double.parseDouble(binding.daysNumber.getText().toString().trim());
+
         System.out.println(days);
         edit.put("daysnumber", days);
         edit.put("date", today_D);
