@@ -114,7 +114,7 @@ public class Managment extends AppCompatActivity implements AdapterView.OnItemSe
 
             } else {
                 userID = result.getContents();
-                Toast.makeText(this, "Scanned: " + userID, Toast.LENGTH_LONG).show();
+               // Toast.makeText(this, "Scanned: " + userID, Toast.LENGTH_LONG).show();
                 gettindata();
 
 
@@ -416,8 +416,7 @@ public class Managment extends AppCompatActivity implements AdapterView.OnItemSe
             int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
             actual_remaining = (int) (numberofdays - diffenrence);
 
-            System.out.println(actual_remaining);
-            //Toast.makeText(Activation.this,actual_remaining,Toast.LENGTH_LONG).show();
+
             binding.remaingTx.setText("remaing days : " + actual_remaining);
 
 

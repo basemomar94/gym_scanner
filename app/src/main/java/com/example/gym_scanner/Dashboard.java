@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -77,6 +80,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     String date;
     int actual_remaining;
     Boolean active;
+    String today_Date;
 
 
     @Override
@@ -95,11 +99,11 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         profile_pic = findViewById(R.id.profile_pic);
         Calendar calendar = Calendar.getInstance();
         int dayofmonth = calendar.get(Calendar.DAY_OF_MONTH);
-        int day_before = calendar.get(Calendar.DAY_OF_MONTH)-1;
+        int day_before = calendar.get(Calendar.DAY_OF_MONTH) - 1;
         int month = calendar.get(Calendar.MONTH) + 1;
         int year = calendar.get(Calendar.YEAR);
         today_firebase = dayofmonth + "-" + month + "-" + year;
-        yesterday=day_before+"-"+month+"-"+year;
+        yesterday = day_before + "-" + month + "-" + year;
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
         admin = findViewById(R.id.admin);
@@ -109,7 +113,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         adminname = sharedPreferences.getString("log", null);
         if (adminname != null) {
             admin.setText(adminname);
-        }
+        } else admin.setText("test");
 
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -118,10 +122,21 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         binding.spinner.setOnItemSelectedListener(this);
 
 
-
         gettodaycount();
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.logout, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        logout();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -162,8 +177,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                     getusername();
 
 
-
-
                 }
             }
         } else {
@@ -198,7 +211,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 profile_pic.setImageBitmap(bitmap);
 
 
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -218,29 +230,31 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
 
-                  today.setText("" + task.getResult().size());
-                  Yesterday_count();
+                    today.setText("" + task.getResult().size());
+                    Yesterday_count();
 
                 }
             });
 
-        } catch (Exception e){
+        } catch (Exception e) {
             today.setText("Today " + e.getMessage());
         }
 
     }
-    void Yesterday_count (){
+
+    void Yesterday_count() {
         try {
 
             firebaseFirestore.collection(yesterday).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    binding.yesterday.setText(""+task.getResult().size());
+                    binding.yesterday.setText("" + task.getResult().size());
                     System.out.println(task.getResult().size());
 
                 }
             });
-        } catch (Exception e){}
+        } catch (Exception e) {
+        }
     }
 
 
@@ -250,7 +264,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         gettodaycount();
     }
 
-    public void logout(View view) {
+    public void logout() {
 
 
         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
@@ -263,48 +277,43 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     }
 
-    public void test(View view) {
-        CollectionReference documentReference =firebaseFirestore.collection("Radwada Sharmota");
-
-
-    }
 
     public void goto_mangaAccounts(View view) {
-        Intent intent = new Intent(Dashboard.this,Managment.class);
+        Intent intent = new Intent(Dashboard.this, Managment.class);
         startActivity(intent);
     }
 
     public void Scan(View view) {
-    try {
-        if (searchinput.equals("id")) {
-            userID = binding.enterdUserid.getText().toString().trim();
-            getusername();
-            binding.visitorCard.setVisibility(View.VISIBLE);
+        try {
+            if (searchinput.equals("id")) {
+                userID = binding.enterdUserid.getText().toString().trim();
+                getusername();
+                binding.visitorCard.setVisibility(View.VISIBLE);
 
-        } else {
-            CollectionReference collectionReference = firebaseFirestore.collection("users");
+            } else {
+                CollectionReference collectionReference = firebaseFirestore.collection("users");
 
-            collectionReference.whereEqualTo(searchinput, binding.enterdUserid.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                collectionReference.whereEqualTo(searchinput, binding.enterdUserid.getText().toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
 
-                            userID = document.getId();
-                            getusername();
-                            binding.visitorCard.setVisibility(View.VISIBLE);
+                                userID = document.getId();
+                                getusername();
+                                binding.visitorCard.setVisibility(View.VISIBLE);
 
 
+                            }
                         }
-                    }
 
-                }
-            });
+                    }
+                });
+            }
+        } catch (Exception e) {
+            Toast.makeText(Dashboard.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
-    } catch (Exception e){
-        Toast.makeText(Dashboard.this,e.getMessage(),Toast.LENGTH_LONG).show();
-    }
 
 
     }
@@ -322,17 +331,24 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-    void getusername(){
+
+    void getusername() {
+        calculat_remaing();
         System.out.println(userID);
-        if (userID!=null){
+        if (userID != null) {
             firebaseFirestore.collection(today_firebase).document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.getResult().exists()) {
-                  //      Toast.makeText(Dashboard.this, "This user has already been  scanned today", Toast.LENGTH_LONG).show();
+                        //      Toast.makeText(Dashboard.this, "This user has already been  scanned today", Toast.LENGTH_LONG).show();
                         lastuser_name.setText("This user has already been  scanned today");
 
-                    } else {
+                    }
+                    else if (actual_remaining<0){
+                        binding.remain.setTextColor(Color.RED);
+                        binding.remain.setText("This user have to renew his subscription");
+                    }
+                    else {
                         //Getting the username from the scanned ID
 
                         try {
@@ -343,16 +359,15 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                     lastuser_name.setText(value.getString("fname"));
                                     username = value.getString("fname") + " " + value.getString("lname");
                                     date = value.getString("date");
-                                    active=value.getBoolean("activation");
-                                    System.out.println(active);
-                                    if (active==false){
+                                    active = value.getBoolean("activation");
+                                    numberofdays = value.getDouble("daysnumber");
+                                    if (active == false) {
                                         System.out.println(active);
                                         lastuser_name.setText("please activate the user first");
                                     } else {
-                                        // calculate_remaing();
 
 
-                                        if (value.getString("fname") != null  && active==true) {
+                                        if (value.getString("fname") != null && active == true) {
 
 
                                             //Adding users to new DATABASE
@@ -360,7 +375,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                             DocumentReference documentReference2 = firebaseFirestore.collection(value.getString("mail")).document(today_firebase);
                                             Map<String, Object> userstoday = new HashMap<>();
                                             userstoday.put("Admin", adminname);
-                                            userstoday.put("time",time);
+                                            userstoday.put("time", time);
                                             userstoday.put("stamp", FieldValue.serverTimestamp());
                                             documentReference2.set(userstoday).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
@@ -377,7 +392,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                             currentusers.put("userid", userID);
                                             currentusers.put("time", time);
                                             currentusers.put("admin", adminname);
-                                            currentusers.put("stamp",FieldValue.serverTimestamp());
+                                            currentusers.put("stamp", FieldValue.serverTimestamp());
                                             documentReference1.set(currentusers).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void unused) {
@@ -386,6 +401,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
                                                     Downloaduserphoto();
                                                     gettodaycount();
+                                                    calculat_remaing();
 
 
                                                 }
@@ -400,7 +416,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                     }
 
 
-
                                 }
                             });
                         } catch (Exception e) {
@@ -411,38 +426,55 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 }
             });
         } else {
-            Toast.makeText(Dashboard.this,"Please enter ",Toast.LENGTH_LONG).show();
+            Toast.makeText(Dashboard.this, "Please enter ", Toast.LENGTH_LONG).show();
         }
 
 
     }
 
-    void calculate_remaing() {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        try {
-            Date date_Sub = simpleDateFormat.parse(date);
-            String today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-            Date today_date = simpleDateFormat.parse(today_Date);
-            long remaing = Math.abs(today_date.getTime() - date_Sub.getTime());
-            int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
-            actual_remaining = (int) (numberofdays - diffenrence);
+    void calculat_remaing() {
+
+        DocumentReference documentReference = firebaseFirestore.collection("users").document(userID);
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                String firebase_date = value.getString("date");
+                Double firebase_days = value.getDouble("daysnumber");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                try {
+                    Date date_Sub = simpleDateFormat.parse(firebase_date);
+                    today_Date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                    Date today_date = simpleDateFormat.parse(today_Date);
+                    long remaing = Math.abs(today_date.getTime() - date_Sub.getTime());
+                    int diffenrence = (int) TimeUnit.DAYS.convert(remaing, TimeUnit.MILLISECONDS);
+                    actual_remaining = (int) (firebase_days - diffenrence);
+                    binding.remain.setText(Integer.toString(actual_remaining) + " days left");
 
 
-            //Toast.makeText(Activation.this,actual_remaining,Toast.LENGTH_LONG).show();
-            binding.remaingDays.setText("remaing days : " + actual_remaining);
+                    System.out.println(actual_remaining);
 
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+
+    }
+
+    public void test(View view) {
+        calculat_remaing();
 
 
     }
 
     public void user_info(View view) {
-        Intent intent = new Intent(Dashboard.this,User_Info.class);
-        intent.putExtra("user",userID);
+        Intent intent = new Intent(Dashboard.this, User_Info.class);
+        intent.putExtra("user", userID);
         startActivity(intent);
     }
 }

@@ -167,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:onClick="user_info"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:cardCornerRadius="5dp">
 
                 <LinearLayout
@@ -182,7 +182,7 @@
                         android:layout_margin="8dp"
                         android:gravity="center"
                         android:text="Info of last visitor"
-                        android:textColor="@color/blue"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -207,17 +207,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="8dp"
-                                android:text="Scan"
                                 android:textColor="@color/blue"
                                 android:textSize="16sp" />
-
-                            <View
-                                android:id="@+id/view"
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginStart="3dp"
-                                android:layout_marginEnd="100dp"
-                                android:background="@color/blue" />
 
                             <TextView
                                 android:id="@+id/lastuser_id"
@@ -228,21 +219,16 @@
                                 android:textColor="@color/blue"
                                 android:textSize="16sp" />
 
-                            <View
-                                android:id="@+id/view2"
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginStart="3dp"
-                                android:layout_marginEnd="100dp"
-                                android:background="@color/blue" />
-
                             <TextView
-                                android:id="@+id/remaing_days"
-                                android:layout_width="match_parent"
+                                android:id="@+id/remain"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:textColor="@color/blue"
-                                android:textSize="16sp" />
+                                android:layout_margin="1dp"
+                                android:layout_marginLeft="3dp"
+                                android:textColor="@color/green"
+                                android:textSize="16sp"
+                                android:visibility="visible" />
+
                         </LinearLayout>
 
                     </LinearLayout>
@@ -291,18 +277,6 @@
                 android:textColor="@color/blue"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/gotonoti2"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_margin="8dp"
-                android:background="@color/yellow"
-                android:gravity="center"
-                android:onClick="logout"
-                android:text="log out"
-                android:textColor="@color/blue"
-                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 

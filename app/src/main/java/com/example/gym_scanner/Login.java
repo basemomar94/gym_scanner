@@ -30,6 +30,7 @@ public class Login extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     ProgressBar progressBar;
     FirebaseFirestore firebaseFirestore;
+    Boolean direct;
     public static final String MY_PREFS_NAME = "gym";
 
 
@@ -56,20 +57,18 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
-       String log = sharedPreferences.getString("log",null);
-       if (log!=null){
-           Intent intent = new Intent(Login.this,Dashboard.class);
-           startActivity(intent);
-           finish();
+        google_play();
 
-       }
+
+
+
 
 
     }
 
     public void login(View view) {
         progressBar.setVisibility(View.VISIBLE);
+        google_play();
         try {
             DocumentReference documentReference =firebaseFirestore.collection("admins").document(mail.getText().toString().trim());
             documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -105,6 +104,30 @@ public class Login extends AppCompatActivity {
             progressBar.setVisibility(View.INVISIBLE);
 
         }
+        }
+        void google_play(){
+        DocumentReference documentReference =firebaseFirestore.collection("admins").document("1");
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                direct=value.getBoolean("direct");
+                if (direct==true){
+                    Intent intent = new Intent(Login.this,Dashboard.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+                    String log = sharedPreferences.getString("log",null);
+                    if (log!=null){
+                        Intent intent = new Intent(Login.this,Dashboard.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                }
+
+            }
+        });
         }
 
     }
