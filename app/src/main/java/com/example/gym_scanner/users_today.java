@@ -112,6 +112,13 @@ public class users_today extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        setupRecycle();
+        firebaseAdapter.startListening();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         firebaseAdapter.stopListening();
