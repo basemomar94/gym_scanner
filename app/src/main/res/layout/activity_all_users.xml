@@ -2,22 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear22"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
     android:orientation="vertical"
     tools:context=".All_users">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Gym users"
-        android:textAlignment="center"
-        android:textColor="@color/blue"
-        android:textSize="16sp"
-        android:textStyle="bold" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -33,12 +23,14 @@
         android:orientation="vertical">
 
         <Switch
-            android:id="@+id/switch1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/active_key"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
             android:layout_gravity="end"
             android:layout_margin="8dp"
-            android:text="All" />
+            android:text="All"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <ScrollView
             android:layout_width="match_parent"

@@ -25,7 +25,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class users_today extends AppCompatActivity {
+public class users_today extends AppCompatActivity  {
 
     private RecyclerView recyclerView;
 
@@ -43,6 +43,7 @@ public class users_today extends AppCompatActivity {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     CollectionReference collectionReference;
     Firebase_Adapter_users firebaseAdapter;
+
 
 
     @Override
