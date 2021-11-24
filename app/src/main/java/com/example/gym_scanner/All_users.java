@@ -31,6 +31,7 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
     ActivityAllUsersBinding binding;
     boolean active;
     Query query;
+    Query query_Search;
     String searchinput;
 
 
@@ -94,6 +95,9 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
            @Override
            public void afterTextChanged(Editable editable) {
                search_fun();
+               if (binding.search.getText().toString().isEmpty()){
+                   Setup_Recycle();
+               }
 
            }
        });
@@ -168,11 +172,13 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
 
     public void search(View view) {
 
-        search_fun();
+
     }
 
     void search_fun(){
-        String firebase_search="fname";
+        binding.activeKey.setChecked(false);
+
+       String firebase_search="fname";
         switch (searchinput) {
             case "name":{
                 firebase_search="fname";
@@ -193,14 +199,12 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
         }
         String text = binding.search.getText().toString().trim();
         collectionReference = firebaseFirestore.collection("users");
-        if (active==true){
-            Query query = collectionReference.orderBy(firebase_search, Query.Direction.DESCENDING).startAt(text).whereEqualTo("activation",true);
-        }
-        else {
-            Query query = collectionReference.orderBy(firebase_search, Query.Direction.DESCENDING).startAt(text);
-        }
+
+            query = collectionReference.orderBy(firebase_search, Query.Direction.DESCENDING).startAt(text);
 
         FirestoreRecyclerOptions<All_item> options = new FirestoreRecyclerOptions.Builder<All_item>().setQuery(query, All_item.class).build();
+
+
 
 
         firebase_all = new Firebase_All(options);
@@ -209,6 +213,17 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(firebase_all);
         firebase_all.startListening();
+        firebase_all.setOnitemClick(new Firebase_Adapter_users.OnitemClick() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                All_item all_item = documentSnapshot.toObject(All_item.class);
+                String userIDD = documentSnapshot.getId();
+                Intent intent = new Intent(All_users.this, User_Info.class);
+                intent.putExtra("user", userIDD);
+                startActivity(intent);
+
+            }
+        });
 
 
     }

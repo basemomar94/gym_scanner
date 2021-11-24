@@ -4,6 +4,7 @@ public class All_item {
     String fname;
     String lname;
     String phone;
+    String mail;
 
  public    All_item(){
 
@@ -33,9 +34,18 @@ public class All_item {
         this.phone = phone;
     }
 
-    public All_item(String fname, String lname, String phone) {
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public All_item(String fname, String lname, String phone, String mail) {
         this.fname = fname;
         this.lname = lname;
         this.phone = phone;
+        this.mail = mail;
     }
 }

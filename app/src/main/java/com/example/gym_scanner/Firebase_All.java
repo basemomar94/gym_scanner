@@ -29,6 +29,7 @@ public class Firebase_All extends FirestoreRecyclerAdapter<All_item,Firebase_All
         holder.fname.setText(model.getFname());
         holder.lname.setText(model.getFname());
         holder.userid.setText(model.getPhone());
+        holder.mail.setText(model.getMail());
 
     }
 
@@ -41,13 +42,14 @@ public class Firebase_All extends FirestoreRecyclerAdapter<All_item,Firebase_All
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView fname,lname,userid;
+        TextView fname,lname,userid,mail;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             fname=itemView.findViewById(R.id.fname);
             lname=itemView.findViewById(R.id.lname);
-            userid=itemView.findViewById(R.id.userid_n);
+            userid=itemView.findViewById(R.id.phone_n);
+            mail=itemView.findViewById(R.id.mail_n);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

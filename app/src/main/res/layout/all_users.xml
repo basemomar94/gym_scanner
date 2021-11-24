@@ -51,24 +51,50 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/userid_n2"
-                    android:layout_width="40dp"
+                    android:id="@+id/dda"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:text="mobile : "
                     android:textColor="@color/blue"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/userid_n"
+                    android:id="@+id/phone_n"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_weight="1"
                     android:text="TextView"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dda2"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:text="mobile : "
+                    android:textColor="@color/blue"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/mail_n"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textSize="14sp" />
             </LinearLayout>
 
         </LinearLayout>
