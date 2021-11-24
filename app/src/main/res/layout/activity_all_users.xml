@@ -54,7 +54,7 @@
             android:layout_height="60dp"
             android:layout_gravity="end"
             android:layout_margin="4dp"
-            android:text="All"
+            android:text="Active"
             android:textColor="@color/black"
             android:textStyle="bold" />
 

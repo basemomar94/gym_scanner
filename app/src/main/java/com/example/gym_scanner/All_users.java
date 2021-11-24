@@ -27,9 +27,9 @@ public class All_users extends AppCompatActivity {
     CollectionReference collectionReference;
     Firebase_All firebase_all;
     ActivityAllUsersBinding binding;
-    boolean active = false;
+    boolean active;
     Query query;
-    Boolean search =false;
+
 
 
     @Override
@@ -41,6 +41,7 @@ public class All_users extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         recyclerView = findViewById(R.id.recycle_all);
         Setup_Recycle();
+        binding.activeKey.setChecked(true);
         binding.activeKey.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -71,15 +72,11 @@ public class All_users extends AppCompatActivity {
 
         collectionReference = firebaseFirestore.collection("users");
         if (active==false){
-            if (search==true) {
-                System.out.println("first");
-                query = collectionReference.orderBy("stamp").startAt("fname",binding.search.getText().toString().trim()).limit(5);
 
-            } else {
                 query = collectionReference.orderBy("stamp", Query.Direction.DESCENDING);
             }
 
-        } else {
+         else {
             query = collectionReference.orderBy("stamp", Query.Direction.DESCENDING).whereEqualTo("activation", true);
 
         }
