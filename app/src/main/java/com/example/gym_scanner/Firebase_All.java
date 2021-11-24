@@ -12,8 +12,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.zip.Inflater;
-
 public class Firebase_All extends FirestoreRecyclerAdapter<All_item,Firebase_All.ViewHolder> {
     private Firebase_Adapter_users.OnitemClick listener;
     /**
@@ -30,7 +28,7 @@ public class Firebase_All extends FirestoreRecyclerAdapter<All_item,Firebase_All
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull All_item model) {
         holder.fname.setText(model.getFname());
         holder.lname.setText(model.getFname());
-        holder.userid.setText(model.getUserid());
+        holder.userid.setText(model.getPhone());
 
     }
 

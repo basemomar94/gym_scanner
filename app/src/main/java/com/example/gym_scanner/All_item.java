@@ -3,7 +3,7 @@ package com.example.gym_scanner;
 public class All_item {
     String fname;
     String lname;
-    String userid;
+    String phone;
 
  public    All_item(){
 
@@ -25,17 +25,17 @@ public class All_item {
         this.lname = lname;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public All_item(String fname, String lname, String userid) {
+    public All_item(String fname, String lname, String phone) {
         this.fname = fname;
         this.lname = lname;
-        this.userid = userid;
+        this.phone = phone;
     }
 }

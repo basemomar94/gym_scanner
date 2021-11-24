@@ -15,8 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gym_scanner">
         <activity
-            android:name=".All_users"
+            android:name=".Login"
             android:exported="false" />
+        <activity
+            android:name=".All_users"
+            android:exported="false"
+            android:parentActivityName=".Dashboard" />
         <activity
             android:name=".Managment"
             android:exported="false"
@@ -37,7 +41,7 @@
             android:exported="false"
             android:parentActivityName=".Dashboard" />
         <activity
-            android:name=".Login"
+            android:name=".Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

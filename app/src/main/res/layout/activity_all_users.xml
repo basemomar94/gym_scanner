@@ -22,12 +22,38 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/search"
+                android:layout_width="181dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:ems="10"
+                android:hint="first name"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:onClick="search"
+                android:text="Search"
+                android:textSize="8sp" />
+
+        </LinearLayout>
+
         <Switch
             android:id="@+id/active_key"
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:layout_gravity="end"
-            android:layout_margin="8dp"
+            android:layout_margin="4dp"
             android:text="All"
             android:textColor="@color/black"
             android:textStyle="bold" />
