@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="search_spinner">
+        <item>name</item>
+        <item>mail</item>
+        <item>phone</item>
+
+    </string-array>
+</resources>

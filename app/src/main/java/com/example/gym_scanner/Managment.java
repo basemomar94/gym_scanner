@@ -352,34 +352,7 @@ public class Managment extends AppCompatActivity implements AdapterView.OnItemSe
     }
 
 
-    public void test(View view) {
-        binding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
 
-                int id = (int) parent.getItemAtPosition(position);
-                System.out.println(id + "check");
-
-
-                switch (id) {
-                    case 0:
-                        System.out.println(0);
-                        break;
-                    case 1:
-                        System.out.println(1);
-                        break;
-                    default:
-                        System.out.println("NO");
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-    }
 
     void renew_setup() {
         Double days;

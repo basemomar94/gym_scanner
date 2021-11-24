@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
@@ -21,7 +23,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class All_users extends AppCompatActivity {
+public class All_users extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private RecyclerView recyclerView;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     CollectionReference collectionReference;
@@ -29,6 +31,7 @@ public class All_users extends AppCompatActivity {
     ActivityAllUsersBinding binding;
     boolean active;
     Query query;
+    String searchinput;
 
 
 
@@ -42,6 +45,8 @@ public class All_users extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycle_all);
         Setup_Recycle();
         binding.activeKey.setChecked(true);
+
+        //Switch key settings
         binding.activeKey.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -63,8 +68,37 @@ public class All_users extends AppCompatActivity {
             }
         });
 
+        //spinner setup
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.search_spinner,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.searchSpinner.setOnItemSelectedListener(this);
 
+
+
+
+
+
+        //search input
+
+       binding.search.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+           }
+
+           @Override
+           public void afterTextChanged(Editable editable) {
+               search_fun();
+
+           }
+       });
     }
+
 
 
 
@@ -133,6 +167,38 @@ public class All_users extends AppCompatActivity {
     }
 
     public void search(View view) {
-        System.out.println(active);
+
+        search_fun();
+    }
+
+    void search_fun(){
+        String text = binding.search.getText().toString().trim();
+        collectionReference = firebaseFirestore.collection("users");
+        Query query = collectionReference.orderBy("fname", Query.Direction.DESCENDING).startAt(text);
+        FirestoreRecyclerOptions<All_item> options = new FirestoreRecyclerOptions.Builder<All_item>().setQuery(query, All_item.class).build();
+
+
+        firebase_all = new Firebase_All(options);
+        RecyclerView recyclerView = findViewById(R.id.recycle_all);
+        // recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(firebase_all);
+        firebase_all.startListening();
+
+
+    }
+    //spinner settings
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+        searchinput=adapterView.getItemAtPosition(i).toString();
+        System.out.println(searchinput);
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

@@ -474,7 +474,6 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     }
 
     public void test(View view) {
-        calculat_remaing();
 
 
     }

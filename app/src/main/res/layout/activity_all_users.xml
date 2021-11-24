@@ -36,15 +36,14 @@
                 android:hint="first name"
                 android:inputType="textPersonName" />
 
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+            <Spinner
+                android:id="@+id/search_spinner"
+                android:entries="@array/search_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:onClick="search"
-                android:text="Search"
-                android:textSize="8sp" />
+                android:layout_weight="1" />
 
         </LinearLayout>
 
