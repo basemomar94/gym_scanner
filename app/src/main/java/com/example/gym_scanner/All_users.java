@@ -172,9 +172,34 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
     }
 
     void search_fun(){
+        String firebase_search="fname";
+        switch (searchinput) {
+            case "name":{
+                firebase_search="fname";
+                binding.search.setHint("Enter first name");
+
+            }
+            break;
+            case "mail":{
+                firebase_search="mail";
+                binding.search.setHint("Enter user's mail");
+            }
+            break;
+            case "phone":{
+                firebase_search="phone";
+                binding.search.setHint("Enter user's phone");
+            }
+            break;
+        }
         String text = binding.search.getText().toString().trim();
         collectionReference = firebaseFirestore.collection("users");
-        Query query = collectionReference.orderBy("fname", Query.Direction.DESCENDING).startAt(text);
+        if (active==true){
+            Query query = collectionReference.orderBy(firebase_search, Query.Direction.DESCENDING).startAt(text).whereEqualTo("activation",true);
+        }
+        else {
+            Query query = collectionReference.orderBy(firebase_search, Query.Direction.DESCENDING).startAt(text);
+        }
+
         FirestoreRecyclerOptions<All_item> options = new FirestoreRecyclerOptions.Builder<All_item>().setQuery(query, All_item.class).build();
 
 
