@@ -233,6 +233,24 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
         searchinput=adapterView.getItemAtPosition(i).toString();
+        switch (searchinput) {
+            case "name":{
+
+                binding.search.setHint("Enter first name");
+
+            }
+            break;
+            case "mail":{
+                binding.search.setHint("Enter user's mail");
+            }
+            break;
+            case "phone":{
+
+                binding.search.setHint("Enter user's phone");
+            }
+            break;
+        }
+
         System.out.println(searchinput);
 
     }

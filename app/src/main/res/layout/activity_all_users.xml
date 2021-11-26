@@ -31,19 +31,19 @@
                 android:id="@+id/search"
                 android:layout_width="181dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="8dp"
                 android:ems="10"
                 android:hint="first name"
                 android:inputType="textPersonName" />
 
             <Spinner
                 android:id="@+id/search_spinner"
-                android:entries="@array/search_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="4dp"
-                android:layout_weight="1" />
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:entries="@array/search_spinner" />
 
         </LinearLayout>
 
@@ -52,7 +52,7 @@
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:layout_gravity="end"
-            android:layout_margin="4dp"
+            android:layout_margin="8dp"
             android:text="Active"
             android:textColor="@color/black"
             android:textStyle="bold" />

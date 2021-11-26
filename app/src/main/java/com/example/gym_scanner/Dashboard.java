@@ -406,6 +406,8 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                                                     Downloaduserphoto();
                                                     gettodaycount();
                                                     calculat_remaing();
+                                                    binding.enterdUserid.setText("");
+
 
 
                                                 }

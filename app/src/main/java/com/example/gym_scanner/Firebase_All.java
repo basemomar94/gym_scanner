@@ -27,7 +27,7 @@ public class Firebase_All extends FirestoreRecyclerAdapter<All_item,Firebase_All
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull All_item model) {
         holder.fname.setText(model.getFname());
-        holder.lname.setText(model.getFname());
+        holder.lname.setText(model.getLname());
         holder.userid.setText(model.getPhone());
         holder.mail.setText(model.getMail());
 
