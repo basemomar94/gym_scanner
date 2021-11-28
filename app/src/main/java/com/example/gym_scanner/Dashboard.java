@@ -75,7 +75,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     String adminname;
     TextView admin;
     String MY_PREFS_NAME = "gym";
-    String searchinput;
+    String searchinput="id";
     Double numberofdays;
     String date;
     int actual_remaining;

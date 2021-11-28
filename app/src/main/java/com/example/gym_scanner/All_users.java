@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,11 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gym_scanner.databinding.ActivityAllUsersBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Locale;
 
 public class All_users extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private RecyclerView recyclerView;
@@ -33,6 +39,7 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
     Query query;
     Query query_Search;
     String searchinput;
+    Integer number;
 
 
 
@@ -112,6 +119,7 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
         if (active==false){
 
                 query = collectionReference.orderBy("stamp", Query.Direction.DESCENDING);
+
             }
 
          else {
@@ -136,6 +144,9 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
                 startActivity(intent);
             }
         });
+        number=firebase_all.getItemCount();
+        System.out.println(number +"count");
+
 
     }
 
@@ -167,7 +178,6 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
 
 
         firebase_all.startListening();
-        System.out.println(active +"check");
     }
 
     public void search(View view) {
@@ -182,22 +192,22 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
         switch (searchinput) {
             case "name":{
                 firebase_search="fname";
-                binding.search.setHint("Enter first name");
+
 
             }
             break;
             case "mail":{
                 firebase_search="mail";
-                binding.search.setHint("Enter user's mail");
+
             }
             break;
             case "phone":{
                 firebase_search="phone";
-                binding.search.setHint("Enter user's phone");
+
             }
             break;
         }
-        String text = binding.search.getText().toString().trim();
+        String text = binding.search.getText().toString().trim().toLowerCase(Locale.ROOT);
         collectionReference = firebaseFirestore.collection("users");
 
             query = collectionReference.orderBy(firebase_search, Query.Direction.DESCENDING).startAt(text);

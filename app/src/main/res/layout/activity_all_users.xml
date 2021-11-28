@@ -47,15 +47,30 @@
 
         </LinearLayout>
 
-        <Switch
-            android:id="@+id/active_key"
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:layout_gravity="end"
-            android:layout_margin="8dp"
-            android:text="Active"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:text="TextView" />
+
+            <Switch
+                android:id="@+id/active_key"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center|end"
+                android:layout_margin="8dp"
+                android:text="Active"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
