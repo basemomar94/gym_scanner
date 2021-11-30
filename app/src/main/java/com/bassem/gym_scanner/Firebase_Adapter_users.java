@@ -1,4 +1,4 @@
-package com.example.gym_scanner;
+package com.bassem.gym_scanner;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

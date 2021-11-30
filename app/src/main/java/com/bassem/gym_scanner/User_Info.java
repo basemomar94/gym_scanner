@@ -1,4 +1,4 @@
-package com.example.gym_scanner;
+package com.bassem.gym_scanner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.gym_scanner.databinding.ActivityUserInfoBinding;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.bassem.gym_scanner.databinding.ActivityUserInfoBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,7 +36,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class User_Info extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.gym_scanner;
+package com.bassem.gym_scanner;
 
 import android.content.Context;
 

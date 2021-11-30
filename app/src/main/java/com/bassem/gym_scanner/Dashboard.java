@@ -1,4 +1,4 @@
-package com.example.gym_scanner;
+package com.bassem.gym_scanner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,13 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.gym_scanner.databinding.ActivityDashboardBinding;
+import com.bassem.gym_scanner.databinding.ActivityDashboardBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -43,11 +42,9 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -186,7 +183,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
 
     public void goToUsers(View view) {
-        Intent intent = new Intent(Dashboard.this, com.example.gym_scanner.users_today.class);
+        Intent intent = new Intent(Dashboard.this, com.bassem.gym_scanner.users_today.class);
         intent.putExtra("userid", userID);
         startActivity(intent);
     }

@@ -1,4 +1,4 @@
-package com.example.gym_scanner;
+package com.bassem.gym_scanner;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +22,8 @@ public class Firebase_All extends FirestoreRecyclerAdapter<All_item,Firebase_All
      */
     public Firebase_All(@NonNull FirestoreRecyclerOptions<All_item> options) {
         super(options);
+      //  options.getSnapshots().size();
+
     }
 
     @Override

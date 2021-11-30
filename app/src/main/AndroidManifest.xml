@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gym_scanner">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.bassem.gym_scanner">
 
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove" />
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/logo"
+        android:icon="@drawable/logon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gym_scanner">
         <activity
-            android:name=".Login"
+            android:name="com.bassem.gym_scanner.Login"
             android:exported="false" />
         <activity
-            android:name=".All_users"
+            android:name="com.bassem.gym_scanner.All_users"
             android:exported="false"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName="com.bassem.gym_scanner.Dashboard" />
         <activity
-            android:name=".Managment"
+            android:name="com.bassem.gym_scanner.Managment"
             android:exported="false"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName="com.bassem.gym_scanner.Dashboard" />
         <activity
-            android:name=".Dashboard"
+            android:name="com.bassem.gym_scanner.Dashboard"
             android:exported="false" />
         <activity
-            android:name=".Notification_panel"
+            android:name="com.bassem.gym_scanner.Notification_panel"
             android:exported="false"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName="com.bassem.gym_scanner.Dashboard" />
         <activity
-            android:name=".User_Info"
+            android:name="com.bassem.gym_scanner.User_Info"
             android:exported="false"
-            android:parentActivityName=".users_today" />
+            android:parentActivityName="com.bassem.gym_scanner.users_today" />
         <activity
-            android:name=".users_today"
+            android:name="com.bassem.gym_scanner.users_today"
             android:exported="false"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName="com.bassem.gym_scanner.Dashboard" />
         <activity
-            android:name=".Splash"
+            android:name="com.bassem.gym_scanner.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Capture"
+            android:name="com.bassem.gym_scanner.Capture"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="false"
             android:windowSoftInputMode="stateAlwaysHidden" />

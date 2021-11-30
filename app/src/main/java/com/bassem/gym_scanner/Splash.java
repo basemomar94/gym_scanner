@@ -1,4 +1,4 @@
-package com.example.gym_scanner;
+package com.bassem.gym_scanner;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

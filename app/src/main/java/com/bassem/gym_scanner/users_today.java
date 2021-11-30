@@ -1,4 +1,4 @@
-package com.example.gym_scanner;
+package com.bassem.gym_scanner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;

@@ -1,31 +1,27 @@
-package com.example.gym_scanner;
+package com.bassem.gym_scanner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gym_scanner.databinding.ActivityAllUsersBinding;
+import com.bassem.gym_scanner.databinding.ActivityAllUsersBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Locale;
 
@@ -130,6 +126,7 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
 
 
         firebase_all = new Firebase_All(options);
+        number=options.getSnapshots().size();
         RecyclerView recyclerView = findViewById(R.id.recycle_all);
         // recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -144,8 +141,7 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
                 startActivity(intent);
             }
         });
-        number=firebase_all.getItemCount();
-        System.out.println(number +"count");
+      //  binding.countTV.setText(number);
 
 
     }

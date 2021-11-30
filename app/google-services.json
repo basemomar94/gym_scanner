@@ -8,12 +8,49 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:994898063269:android:56c8cd01087661ffbf824c",
+        "android_client_info": {
+          "package_name": "com.bassem.gym_scanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "994898063269-v60ju5muau7nsqk044ggk2ekdhk71h6a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc-Q1HjWA3eAfcRWdsjkvgSEpsp25bgGQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "994898063269-v60ju5muau7nsqk044ggk2ekdhk71h6a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:994898063269:android:7ebb3b6044cca841bf824c",
         "android_client_info": {
           "package_name": "com.example.gym"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "994898063269-tgpfa36g36e0ivmn3l1fte90vko8od30.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gym",
+            "certificate_hash": "6daec63ad5bf40863be771e2ba1e2a49a5c1eb8d"
+          }
+        },
         {
           "client_id": "994898063269-v60ju5muau7nsqk044ggk2ekdhk71h6a.apps.googleusercontent.com",
           "client_type": 3
