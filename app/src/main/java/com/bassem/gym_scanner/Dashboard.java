@@ -222,7 +222,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
     void gettodaycount() {
         try {
-            firebaseFirestore.collection(today_firebase).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            firebaseFirestore.collection(today_firebase).orderBy("stamp").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
@@ -242,7 +242,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
     void Yesterday_count() {
         try {
 
-            firebaseFirestore.collection(yesterday).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            firebaseFirestore.collection(yesterday).orderBy("stamp").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     binding.yesterday.setText("" + task.getResult().size());

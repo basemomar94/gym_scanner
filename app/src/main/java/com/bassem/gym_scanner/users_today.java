@@ -149,7 +149,7 @@ public class users_today extends AppCompatActivity  {
     }
 
     void getCount() {
-        firebaseFirestore.collection(today_firebase).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        firebaseFirestore.collection(today_firebase).orderBy("stamp").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
