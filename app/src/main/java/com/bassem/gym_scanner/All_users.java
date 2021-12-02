@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,10 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bassem.gym_scanner.databinding.ActivityAllUsersBinding;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Locale;
 
@@ -31,11 +35,11 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
     CollectionReference collectionReference;
     Firebase_All firebase_all;
     ActivityAllUsersBinding binding;
-    boolean active;
+    boolean active=true;
     Query query;
     Query query_Search;
     String searchinput;
-    Integer number;
+    int number;
 
 
 
@@ -49,6 +53,7 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
         recyclerView = findViewById(R.id.recycle_all);
         Setup_Recycle();
         binding.activeKey.setChecked(true);
+        count();
 
         //Switch key settings
         binding.activeKey.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -58,6 +63,7 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
                     active=true;
                     System.out.println(active);
                     Setup_Recycle();
+                    count();
                     active=false;
 
 
@@ -65,6 +71,7 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
                     binding.activeKey.setText("Active");
                 } else {
                     Setup_Recycle();
+                    count();
                     binding.activeKey.setText("All");
                     active=true;
                     firebase_all.startListening();
@@ -126,7 +133,6 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
 
 
         firebase_all = new Firebase_All(options);
-        number=options.getSnapshots().size();
         RecyclerView recyclerView = findViewById(R.id.recycle_all);
         // recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -183,6 +189,7 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
 
     void search_fun(){
         binding.activeKey.setChecked(false);
+        binding.countTV.setVisibility(View.INVISIBLE);
 
        String firebase_search="fname";
         switch (searchinput) {
@@ -263,6 +270,40 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+    void count ( ){
+
+        if (active==true){
+            firebaseFirestore.collection("users").orderBy("stamp", Query.Direction.DESCENDING).whereEqualTo("activation",true).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+
+                    number =   task.getResult().size();
+                    System.out.println(number+"========================test");
+                    binding.countTV.setVisibility(View.VISIBLE);
+
+                    binding.countTV.setText("number of active users "+String.valueOf(number));
+
+                }
+            });
+        } else {
+
+            firebaseFirestore.collection("users").orderBy("stamp", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+
+                    number =   task.getResult().size();
+                    System.out.println(number+"========================test");
+                    binding.countTV.setVisibility(View.VISIBLE);
+                    binding.countTV.setText("number of all users "+String.valueOf(number));
+
+                }
+            });
+        }
+
 
     }
 }

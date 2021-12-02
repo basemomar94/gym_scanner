@@ -59,7 +59,9 @@
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:text="TextView"
+                android:text="number of users "
+                android:textColor="@color/blue"
+                android:textStyle="bold"
                 android:visibility="invisible" />
 
             <Switch
