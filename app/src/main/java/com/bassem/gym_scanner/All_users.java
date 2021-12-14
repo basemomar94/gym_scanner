@@ -229,7 +229,8 @@ public class All_users extends AppCompatActivity implements AdapterView.OnItemSe
         firebase_all.setOnitemClick(new Firebase_Adapter_users.OnitemClick() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                All_item all_item = documentSnapshot.toObject(All_item.class);
+              //  All_item all_item = documentSnapshot.toObject(All_item.class);
+
                 String userIDD = documentSnapshot.getId();
                 Intent intent = new Intent(All_users.this, User_Info.class);
                 intent.putExtra("user", userIDD);
